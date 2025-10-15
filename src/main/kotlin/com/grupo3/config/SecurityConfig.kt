@@ -28,7 +28,6 @@ class SecurityConfig {
                 it.requestMatchers(
                   "/api/hello",
                   "/api/auth/register",
-                    "/api/hotels",
                     "/api/hotels/**"
 
                 ).permitAll()
