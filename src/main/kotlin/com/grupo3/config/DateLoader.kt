@@ -21,7 +21,7 @@ class DateLoader {
                     isAvailable = true,
                     rating = 4.7,
                     reviewCount = 342,
-                    pricePerNight = 280000.0,
+                    pricePerNight = 330.0,
                     latitude = 6.2088,
                     longitude = -75.5673
                 ),
@@ -32,7 +32,7 @@ class DateLoader {
                     isAvailable = true,
                     rating = 4.5,
                     reviewCount = 256,
-                    pricePerNight = 220000.0,
+                    pricePerNight = 450.0,
                     latitude = 6.2443,
                     longitude = -75.5912
                 ),
@@ -43,7 +43,7 @@ class DateLoader {
                     isAvailable = true,
                     rating = 4.3,
                     reviewCount = 189,
-                    pricePerNight = 180000.0,
+                    pricePerNight = 250.0,
                     latitude = 6.2518,
                     longitude = -75.5636
                 ),
@@ -54,7 +54,7 @@ class DateLoader {
                     isAvailable = true,
                     rating = 4.8,
                     reviewCount = 423,
-                    pricePerNight = 320000.0,
+                    pricePerNight = 500.0,
                     latitude = 6.1701,
                     longitude = -75.5838
                 )
