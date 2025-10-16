@@ -1,0 +1,40 @@
+### GET request to example server
+GET http://localhost:8080/api/hello
+
+###
+
+# curl -X POST http://localhost:8080/api/hotels
+#  -H "Content-Type: application/json"
+#  -d '{
+#    "name": "Grand Plaza Hotel",
+#    "location": "New York, NY",
+#    "image": "https://example.com/image.jpg",
+#    "isAvailable": true,
+#    "rating": 4.5,
+#    "reviewCount": 234,
+#    "pricePerNight": 299.99
+#  }'
+POST http://localhost:8080/api/hotels
+Content-Type: application/json
+
+{
+  "name": "Grand Plaza Hotel",
+  "location": "New York, NY",
+  "image": "https://example.com/image.jpg",
+  "isAvailable": true,
+  "rating": 6,
+  "reviewCount": 234,
+  "pricePerNight": 299.99
+}
+
+###
+
+# curl http://localhost:8080/api/hotels
+GET http://localhost:8080/api/hotels
+
+###
+
+
+
+
+
