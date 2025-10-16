@@ -1,5 +1,7 @@
 package com.grupo3.exception
 
+import jakarta.persistence.EntityNotFoundException
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.FieldError
@@ -7,16 +9,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationExceptions(
-        ex: MethodArgumentNotValidException
-    ): ResponseEntity<Map<String, Any>> {
+    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, Any>> {
         val errors = mutableMapOf<String, String>()
-
         ex.bindingResult.allErrors.forEach { error ->
             val fieldName = (error as FieldError).field
             val errorMessage = error.defaultMessage ?: "Invalid value"
@@ -29,17 +27,46 @@ class GlobalExceptionHandler {
             "message" to "Invalid input data",
             "errors" to errors
         )
-
         return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler(RuntimeException::class)
-    fun handleRuntimeException(ex: RuntimeException): ResponseEntity<Map<String, Any>> {
+    @ExceptionHandler(EntityNotFoundException::class)
+    fun handleEntityNotFound(ex: EntityNotFoundException): ResponseEntity<Map<String, Any>> {
         val response = mapOf(
             "status" to HttpStatus.NOT_FOUND.value(),
             "error" to "Not Found",
             "message" to (ex.message ?: "Resource not found")
         )
         return ResponseEntity(response, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException::class)
+    fun handleDataIntegrityViolation(ex: DataIntegrityViolationException): ResponseEntity<Map<String, Any>> {
+        val response = mapOf(
+            "status" to HttpStatus.CONFLICT.value(),
+            "error" to "Data Integrity Violation",
+            "message" to (ex.rootCause?.message ?: "Operation violates data constraints")
+        )
+        return ResponseEntity(response, HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalState(ex: IllegalStateException): ResponseEntity<Map<String, Any>> {
+        val response = mapOf(
+            "status" to HttpStatus.CONFLICT.value(),
+            "error" to "Conflict",
+            "message" to (ex.message ?: "Operation cannot be performed")
+        )
+        return ResponseEntity(response, HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleGenericException(ex: Exception): ResponseEntity<Map<String, Any>> {
+        val response = mapOf(
+            "status" to HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "error" to "Internal Server Error",
+            "message" to (ex.message ?: "Unexpected error occurred")
+        )
+        return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }
