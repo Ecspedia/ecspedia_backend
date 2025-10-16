@@ -21,33 +21,35 @@ class SecurityConfig {
     }
 
     @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+           val allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS")
+           val allowedOrigins = allowedOriginsEnv.split(",").map { it.trim() }
+
+           val config = CorsConfiguration()
+           config.allowedOrigins = allowedOrigins
+           config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+           config.allowedHeaders = listOf("*")
+           config.allowCredentials = true
+
+           val source = UrlBasedCorsConfigurationSource()
+           source.registerCorsConfiguration("/**", config)
+           return source
+    }
+
+    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .cors { it.configurationSource(corsConfigurationSource()) }
             .csrf { it.disable() }
-            .cors { } // 👈 Habilita soporte para CORS
             .authorizeHttpRequests {
                 it.requestMatchers(
                     "/api/hello",
-                    "/api/auth/register",
-                    "/api/auth/login"
+                    "/api/auth/**",
+                    "/api/hotels/**",
                 ).permitAll()
                     .anyRequest().authenticated()
             }
 
         return http.build()
-    }
-
-    // 🔹 Configuración CORS global
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val config = CorsConfiguration()
-        config.allowedOrigins = listOf("http://localhost:3000") // 👈 tu frontend
-        config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        config.allowedHeaders = listOf("*")
-        config.allowCredentials = true // permite cookies o auth headers si los usas
-
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", config)
-        return source
     }
 }
