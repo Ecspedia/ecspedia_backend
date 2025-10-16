@@ -37,6 +37,7 @@ class SecurityConfig {
         return http.build()
     }
 
+
     // 🔹 Configuración CORS global
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
