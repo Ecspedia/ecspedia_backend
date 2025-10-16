@@ -6,9 +6,11 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -59,12 +61,19 @@ class HotelController(private val hotelService: HotelService) {
 
 
     }
-
-    // CUSTOM - GET /api/hotels/available
-    @GetMapping("/available")
-    fun getAvailableHotels(): ResponseEntity<List<Hotel>> {
-        val hotels = hotelService.getAvailableHotels()
-        return ResponseEntity(hotels, HttpStatus.OK)
+    @PutMapping("/{id}")
+    fun updateHotelById( @PathVariable id: String,
+                         @Valid @RequestBody hotel: Hotel): ResponseEntity<Any> {
+        val updatedHotel = hotelService.updateHotelById(id, hotel)
+        return ResponseEntity(updatedHotel, HttpStatus.OK)
     }
+
+    @DeleteMapping("/{id}")
+    fun deleteHotelById(@PathVariable id: String): ResponseEntity<Void> {
+        val hotel = hotelService.deleteHotelById(id)
+        return ResponseEntity.noContent().build()
+
+    }
+
 
 }
