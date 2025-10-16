@@ -22,7 +22,7 @@ class SecurityConfig {
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
-           val allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS")
+           val allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS") ?: "http://localhost:3000"
            val allowedOrigins = allowedOriginsEnv.split(",").map { it.trim() }
 
            val config = CorsConfiguration()
