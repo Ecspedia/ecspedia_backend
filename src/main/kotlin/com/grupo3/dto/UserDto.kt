@@ -17,3 +17,22 @@ data class UserRegistrationDto(
     @field:Size(min = 8, message = "Password must be at least 8 characters long")
     val password: String
 )
+
+data class LoginDto(
+    @field:NotBlank(message = "Username is required")
+    val username: String,
+
+    @field:NotBlank(message = "Password is required")
+    val password: String
+)
+
+data class LoginResponseDto(
+    val message: String,
+    val user: UserInfoDto
+)
+
+data class UserInfoDto(
+    val id: Long,
+    val username: String,
+    val email: String
+)

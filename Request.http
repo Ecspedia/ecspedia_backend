@@ -3,6 +3,29 @@ GET http://localhost:8080/api/hello
 
 ###
 
+# User Registration
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+# User Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+
 # curl -X POST http://localhost:8080/api/hotels
 #  -H "Content-Type: application/json"
 #  -d '{
