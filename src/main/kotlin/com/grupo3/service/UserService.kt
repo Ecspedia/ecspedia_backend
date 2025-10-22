@@ -1,5 +1,8 @@
 package com.grupo3.service
 
+import com.grupo3.dto.LoginDto
+import com.grupo3.dto.LoginResponseDto
+import com.grupo3.dto.UserInfoDto
 import com.grupo3.dto.UserRegistrationDto
 import com.grupo3.model.User
 import com.grupo3.repository.UserRepository
@@ -29,5 +32,26 @@ class UserService(
         )
 
         return userRepository.save(user)
+    }
+
+    @Transactional(readOnly = true)
+    fun loginUser(loginDto: LoginDto): LoginResponseDto {
+        val user = userRepository.findByUsername(loginDto.username)
+            ?: throw RuntimeException("Invalid username or password")
+
+        if (!passwordEncoder.matches(loginDto.password, user.password)) {
+            throw RuntimeException("Invalid username or password")
+        }
+
+        val userInfo = UserInfoDto(
+            id = user.id!!,
+            username = user.username,
+            email = user.email
+        )
+
+        return LoginResponseDto(
+            message = "Login successful",
+            user = userInfo
+        )
     }
 }

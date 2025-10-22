@@ -1,5 +1,7 @@
 package com.grupo3.controller
 
+import com.grupo3.dto.LoginDto
+import com.grupo3.dto.LoginResponseDto
 import com.grupo3.dto.UserRegistrationDto
 import com.grupo3.service.UserService
 import jakarta.validation.Valid
@@ -23,6 +25,23 @@ class UserController(private val userService: UserService) {
             ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully")
         } catch (ex: RuntimeException) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+        }
+    }
+
+    @PostMapping("/login")
+    fun loginUser(
+        @Valid @RequestBody loginDto: LoginDto
+    ): ResponseEntity<LoginResponseDto> {
+        return try {
+            val loginResponse = userService.loginUser(loginDto)
+            ResponseEntity.ok(loginResponse)
+        } catch (ex: RuntimeException) {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                LoginResponseDto(
+                    message = ex.message ?: "Login failed",
+                    user = com.grupo3.dto.UserInfoDto(0, "", "")
+                )
+            )
         }
     }
 }
