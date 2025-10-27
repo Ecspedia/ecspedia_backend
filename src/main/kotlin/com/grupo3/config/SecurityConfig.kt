@@ -44,6 +44,7 @@ class SecurityConfig {
             .authorizeHttpRequests {
                 it.requestMatchers(
                     "/api/hello",
+                    "/api/user/**",
                     "/api/auth/**",
                     "/api/hotels/**",
                 ).permitAll()
