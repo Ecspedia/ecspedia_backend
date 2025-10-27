@@ -16,7 +16,7 @@ class DateLoader {
             val hotels = listOf(
                 Hotel(
                     name = "Hotel El Poblado Plaza",
-                    location = "Medellín, Colombia",
+                    location = "Medellín",
                     image = "https://expediastorage.s3.us-east-1.amazonaws.com/hotel_mock.avif",
                     isAvailable = true,
                     rating = 4.7,
@@ -27,7 +27,7 @@ class DateLoader {
                 ),
                 Hotel(
                     name = "Laureles Executive Hotel",
-                    location = "Medellín, Colombia",
+                    location = "Medellín",
                     image = "https://expediastorage.s3.us-east-1.amazonaws.com/img2.webp",
                     isAvailable = true,
                     rating = 4.5,
@@ -38,7 +38,7 @@ class DateLoader {
                 ),
                 Hotel(
                     name = "Centro Histórico Inn",
-                    location = "Medellín, Colombia",
+                    location = "Medellín",
                     image = "https://expediastorage.s3.us-east-1.amazonaws.com/img3.webp",
                     isAvailable = true,
                     rating = 4.3,
@@ -49,7 +49,7 @@ class DateLoader {
                 ),
                 Hotel(
                     name = "Envigado Boutique Hotel",
-                        location = "Medellín, Colombia",
+                        location = "Medellín",
                     image = "https://expediastorage.s3.us-east-1.amazonaws.com/img5.avif",
                     isAvailable = true,
                     rating = 4.8,
