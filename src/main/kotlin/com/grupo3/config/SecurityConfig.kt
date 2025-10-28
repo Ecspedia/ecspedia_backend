@@ -47,6 +47,8 @@ class SecurityConfig {
                     "/api/user/**",
                     "/api/auth/**",
                     "/api/hotels/**",
+                    "/graphql",
+                    "/graphiql",
                 ).permitAll()
                     .anyRequest().authenticated()
             }

@@ -1,28 +1,36 @@
 package com.grupo3.controller
 
 import com.grupo3.dto.user.UserRegistrationDto
+import com.grupo3.model.User
 import com.grupo3.service.UserService
-import jakarta.validation.Valid
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import graphql.GraphQLException
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
+import org.springframework.stereotype.Controller
 
-@RestController
-@RequestMapping("/api/user")
+@Controller
 class UserController(private val userService: UserService) {
 
-    @PostMapping
+    @MutationMapping
     fun registerUser(
-        @Valid @RequestBody userRegistrationDto: UserRegistrationDto
-    ): ResponseEntity<String> {
+        @Argument userRegistrationDto: UserRegistrationDto
+    ): User {
         return try {
             userService.registerUser(userRegistrationDto)
-            ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully")
         } catch (ex: RuntimeException) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+            throw GraphQLException(ex.message ?: "Registration failed")
         }
+    }
+
+    @QueryMapping
+    fun getUserById(@Argument id: Long): User {
+        return userService.findUserById(id)
+            ?: throw GraphQLException("User not found with id: $id")
+    }
+
+    @QueryMapping
+    fun getAllUsers(): List<User> {
+        return userService.findAllUsers()
     }
 }
