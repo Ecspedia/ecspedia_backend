@@ -1,0 +1,25 @@
+type User {
+    id: ID!
+    username: String!
+    email: String!
+}
+
+input UserRegistrationInput {
+    username: String!
+    email: String!
+    password: String!
+}
+
+type UserRegistrationResponse {
+    message: String!
+    user: User
+}
+
+type Query {
+    getUserById(id: ID!): User
+    getAllUsers: [User!]!
+}
+
+type Mutation {
+    registerUser(userRegistrationDto: UserRegistrationInput!): User!
+}

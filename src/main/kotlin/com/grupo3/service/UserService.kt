@@ -22,12 +22,20 @@ class UserService(
             throw RuntimeException("Email is already in use")
         }
 
-        val user = User(
+        val newUser = User(
             username = userRegistrationDto.username,
             email = userRegistrationDto.email,
             password = passwordEncoder.encode(userRegistrationDto.password)
         )
 
-        return userRepository.save(user)
+        return userRepository.save(newUser)
+    }
+
+    fun findUserById(id: Long): User? {
+        return userRepository.findById(id).orElse(null)
+    }
+
+    fun findAllUsers(): List<User> {
+        return userRepository.findAll()
     }
 }
