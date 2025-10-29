@@ -1,0 +1,30 @@
+package com.grupo3.service
+
+import com.grupo3.dto.auth.AuthRequestDto
+import com.grupo3.dto.auth.AuthResponseDto
+import com.grupo3.repository.UserRepository
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import kotlin.RuntimeException
+
+@Service
+class AuthService(
+    private val jwtService: JwtService,
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
+    @Transactional(readOnly = true)
+    fun authenticate(authRequest: AuthRequestDto): AuthResponseDto {
+        val user = userRepository.findByUsername(authRequest.username)
+            ?: throw RuntimeException("User not found")
+
+        if (!passwordEncoder.matches(authRequest.password, user.password)) {
+            throw RuntimeException("Invalid credentials")
+        }
+
+        val token = jwtService.generateToken(user)
+
+        return AuthResponseDto(token)
+    }
+}
