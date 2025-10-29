@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController
 class HelloController {
     @GetMapping("/hello")
     fun hello(): String {
-        return "Hello from Grupo3 Spring Boot!"
+        return "Hello from Especedia Spring Boot!"
     }
 }
