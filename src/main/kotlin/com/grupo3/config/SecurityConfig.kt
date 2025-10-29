@@ -46,6 +46,7 @@ class SecurityConfig {
                     "/api/hello",
                     "/api/auth/**",
                     "/api/hotels/**",
+                    "/api/email/**"
                 ).permitAll()
                     .anyRequest().authenticated()
             }

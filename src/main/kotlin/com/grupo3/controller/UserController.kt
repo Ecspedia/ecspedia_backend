@@ -7,10 +7,7 @@ import com.grupo3.service.UserService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
@@ -43,5 +40,29 @@ class UserController(private val userService: UserService) {
                 )
             )
         }
+    }
+    
+    @PostMapping("/forgot-password")
+    fun forgotPassword(
+        @RequestParam email: String
+    ): ResponseEntity<Map<String, Any>> {
+        val success = userService.initiatePasswordReset(email)
+        return ResponseEntity.ok(mapOf(
+            "success" to success,
+            "message" to if (success) "Password reset email sent" else "Email not found or failed to send"
+        ))
+    }
+    
+    @PostMapping("/reset-password")
+    fun resetPassword(
+        @RequestParam email: String,
+        @RequestParam token: String,
+        @RequestParam newPassword: String
+    ): ResponseEntity<Map<String, Any>> {
+        val success = userService.resetPassword(email, token, newPassword)
+        return ResponseEntity.ok(mapOf(
+            "success" to success,
+            "message" to if (success) "Password reset successfully" else "Failed to reset password"
+        ))
     }
 }
