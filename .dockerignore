@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+*.iml
+*.ipr
+*.iws
+.vscode
+.DS_Store
+
+# Build output
+build/
+target/
+out/
+bin/
+
+# Gradle
+.gradle
+!gradle/wrapper
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+*.md
+docs/
+
+# Tests
+**/test-results/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
