@@ -4,10 +4,13 @@ on:
   push:
     branches:
       - dev
+      - main
 
 jobs:
-  deploy:
+  deploy-dev:
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
+    environment: development
 
     steps:
       - name: Checkout repository
@@ -24,5 +27,28 @@ jobs:
             git reset --hard
             git clean -fd
             git pull origin dev
+            docker compose down --remove-orphans
+            docker compose up -d --build --force-recreate
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: SSH, pull latest, build, and deploy to PRODUCTION
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.PROD_VM_HOST }}
+          username: ${{ secrets.PROD_VM_USER }}
+          key: ${{ secrets.PROD_VM_SSH_KEY }}
+          script: |
+            cd ecspedia_backend/
+            git reset --hard
+            git clean -fd
+            git pull origin main
             docker compose down --remove-orphans
             docker compose up -d --build --force-recreate
