@@ -48,7 +48,7 @@ class SecurityConfig {
                     "/api/user/**",
                     "/api/auth/**",
                     "/api/hotels/**",
-                    "/api/email/**"
+                    "/api/email/**",
                     "/graphql",
                     "/graphiql",
                 ).permitAll()
