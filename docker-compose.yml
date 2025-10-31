@@ -1,17 +1,47 @@
-
 version: '3.8'
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:16-alpine
+    container_name: ecspedia-db
     environment:
-      POSTGRES_USER: grupo3
+      POSTGRES_USER: ecspedia
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: grupo3
+      POSTGRES_DB: ecspedia
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecspedia-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecspedia"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecspedia-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecspedia
+      SPRING_DATASOURCE_USERNAME: ecspedia
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ecspedia-network
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+
+networks:
+  ecspedia-network:
+    driver: bridge

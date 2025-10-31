@@ -1,0 +1,60 @@
+type Query {
+    #User Queries
+    getUserById(id: ID!): User
+    getAllUsers: [User!]!
+
+    #Hotel Queries
+    hotels: [Hotel!]!
+    hotelById(id: ID!): Hotel
+    hotelsByLocation(location: String!): [Hotel!]!
+}
+
+type Mutation {
+    registerUser(userRegistrationDto: UserRegistrationInput!): User!
+    createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
+}
+
+
+type User {
+    id: ID!
+    username: String!
+    email: String!
+}
+
+input UserRegistrationInput {
+    username: String!
+    email: String!
+    password: String!
+}
+
+type UserRegistrationResponse {
+    message: String!
+    user: User
+}
+
+
+
+type Hotel{
+    id:ID!
+    name:String!
+    location:String!
+    image:String
+    isAvailable:Boolean!
+    rating:Float
+    reviewCount:Int
+    pricePerNight:Float!
+    latitude:Float
+    longitude:Float
+}
+
+input HotelCreateInput {
+    name: String!
+    location: String!
+    image: String
+    isAvailable: Boolean
+    rating: Float
+    reviewCount: Int
+    pricePerNight: Float!
+    latitude: Float
+    longitude: Float
+}

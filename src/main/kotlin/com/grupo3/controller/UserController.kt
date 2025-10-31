@@ -1,45 +1,41 @@
 package com.grupo3.controller
 
-import com.grupo3.dto.LoginDto
-import com.grupo3.dto.LoginResponseDto
-import com.grupo3.dto.UserRegistrationDto
+import com.grupo3.dto.user.UserRegistrationDto
+import com.grupo3.model.User
 import com.grupo3.service.UserService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import graphql.GraphQLException
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
+import org.springframework.stereotype.Controller
 
-@RestController
-@RequestMapping("/api/auth")
+@Controller
 class UserController(private val userService: UserService) {
 
-    @PostMapping("/register")
+    @MutationMapping
     fun registerUser(
-        @Valid @RequestBody registrationDto: UserRegistrationDto
-    ): ResponseEntity<String> {
+        @Argument userRegistrationDto: UserRegistrationDto
+    ): User {
         return try {
-            val user = userService.registerNewUser(registrationDto)
-            ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully")
+            userService.registerUser(userRegistrationDto)
         } catch (ex: RuntimeException) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+            throw GraphQLException(ex.message ?: "Registration failed")
         }
     }
 
-    @PostMapping("/login")
-    fun loginUser(
-        @Valid @RequestBody loginDto: LoginDto
-    ): ResponseEntity<LoginResponseDto> {
-        return try {
-            val loginResponse = userService.loginUser(loginDto)
-            ResponseEntity.ok(loginResponse)
-        } catch (ex: RuntimeException) {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                LoginResponseDto(
-                    message = ex.message ?: "Login failed",
-                    user = com.grupo3.dto.UserInfoDto(0, "", "")
-                )
-            )
-        }
+    @QueryMapping
+    fun getUserById(@Argument id: Long): User {
+        return userService.findUserById(id)
+            ?: throw GraphQLException("User not found with id: $id")
+    }
+
+    @QueryMapping
+    fun getAllUsers(): List<User> {
+        return userService.findAllUsers()
     }
     
     @PostMapping("/forgot-password")

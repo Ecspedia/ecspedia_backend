@@ -22,7 +22,8 @@ class SecurityConfig {
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
-           val allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS") ?: "http://localhost:3000"
+            val allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS")
+            ?: "https://ecspedia.shop,https://dev.ecspedia.shop,http://localhost:3000"
            val allowedOrigins = allowedOriginsEnv.split(",").map { it.trim() }
 
            val config = CorsConfiguration()
@@ -44,9 +45,12 @@ class SecurityConfig {
             .authorizeHttpRequests {
                 it.requestMatchers(
                     "/api/hello",
+                    "/api/user/**",
                     "/api/auth/**",
                     "/api/hotels/**",
                     "/api/email/**"
+                    "/graphql",
+                    "/graphiql",
                 ).permitAll()
                     .anyRequest().authenticated()
             }
