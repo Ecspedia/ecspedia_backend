@@ -57,7 +57,36 @@ GET http://localhost:8080/api/hotels
 
 ###
 
+# Test Email Configuration
+POST http://localhost:8080/api/email/test
 
+###
 
+# Send Password Reset Email
+POST http://localhost:8080/api/auth/forgot-password?email=test@example.com&baseUrl=http://localhost:8080
 
+###
+
+# Reset Password
+POST http://localhost:8080/api/auth/reset-password?email=test@example.com&token=some-token&newPassword=newpassword123
+
+###
+
+# Send Custom Email
+POST http://localhost:8080/api/email/send?to=test@example.com&subject=Test Subject&text=This is a test email
+
+###
+
+# Send Bulk Emails
+POST http://localhost:8080/api/email/bulk
+Content-Type: application/json
+
+{
+  "recipients": ["test1@example.com", "test2@example.com"],
+  "subject": "Bulk Email Test",
+  "htmlContent": "<h1>Bulk Email</h1><p>This is a bulk email test.</p>",
+  "textContent": "Bulk Email\n\nThis is a bulk email test."
+}
+
+###
 
