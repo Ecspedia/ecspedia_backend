@@ -28,6 +28,7 @@ jobs:
             git clean -fd
             git pull origin dev
             docker compose down --remove-orphans
+            docker rm -f $(docker ps -aq --filter "name=ecspedia") || true
             docker compose up -d --build --force-recreate
 
   deploy-prod:
@@ -51,4 +52,5 @@ jobs:
             git clean -fd
             git pull origin main
             docker compose down --remove-orphans
+            docker rm -f $(docker ps -aq --filter "name=ecspedia") || true
             docker compose up -d --build --force-recreate
