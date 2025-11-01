@@ -3,6 +3,7 @@ package com.grupo3.service
 import com.grupo3.dto.auth.AuthRequestDto
 import com.grupo3.dto.auth.AuthResponseDto
 import com.grupo3.repository.UserRepository
+import com.grupo3.security.jwt.JwtTokenService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -10,7 +11,7 @@ import kotlin.RuntimeException
 
 @Service
 class AuthService(
-    private val jwtService: JwtService,
+    private val jwtTokenService: JwtTokenService,
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
 ) {
@@ -23,7 +24,7 @@ class AuthService(
             throw RuntimeException("Invalid credentials")
         }
 
-        val token = jwtService.generateToken(user)
+        val token = jwtTokenService.generateToken(user)
 
         return AuthResponseDto(token)
     }
