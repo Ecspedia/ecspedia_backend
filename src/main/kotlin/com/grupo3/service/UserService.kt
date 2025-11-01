@@ -51,6 +51,10 @@ class UserService(
         return userRepository.findById(id).orElse(null)
     }
 
+    fun findUserByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
+    }
+
     fun findAllUsers(): List<User> {
         return userRepository.findAll()
     }
