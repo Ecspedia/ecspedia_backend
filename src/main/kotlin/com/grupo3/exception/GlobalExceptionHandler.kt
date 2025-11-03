@@ -1,72 +1,66 @@
 package com.grupo3.exception
 
-import jakarta.persistence.EntityNotFoundException
-import org.springframework.dao.DataIntegrityViolationException
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.NoHandlerFoundException
+import java.util.Date
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, Any>> {
-        val errors = mutableMapOf<String, String>()
-        ex.bindingResult.allErrors.forEach { error ->
-            val fieldName = (error as FieldError).field
-            val errorMessage = error.defaultMessage ?: "Invalid value"
-            errors[fieldName] = errorMessage
+    fun handleValidationExceptions(ex: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ErrorDetails> {
+        val violations = ex.bindingResult.fieldErrors.map {
+            Violation(
+                field = it.field,
+                message = it.defaultMessage ?: "Invalid value",
+                rejectedValue = it.rejectedValue?.toString()
+            )
         }
-
-        val response = mapOf(
-            "status" to HttpStatus.BAD_REQUEST.value(),
-            "error" to "Validation Failed",
-            "message" to "Invalid input data",
-            "errors" to errors
+        val firstErrorMessage = violations.firstOrNull()?.message ?: "Invalid value"
+        val errorDetails = ErrorDetails(
+            message = firstErrorMessage,
+            details = "Validation Error",
+            localDateTime = Date(),
+            code = "VALIDATION_FAILED",
+            status = HttpStatus.BAD_REQUEST.value(),
+            path = request.requestURI,
+            violations = violations
         )
-        return ResponseEntity(response, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler(EntityNotFoundException::class)
-    fun handleEntityNotFound(ex: EntityNotFoundException): ResponseEntity<Map<String, Any>> {
-        val response = mapOf(
-            "status" to HttpStatus.NOT_FOUND.value(),
-            "error" to "Not Found",
-            "message" to (ex.message ?: "Resource not found")
-        )
-        return ResponseEntity(response, HttpStatus.NOT_FOUND)
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException::class)
-    fun handleDataIntegrityViolation(ex: DataIntegrityViolationException): ResponseEntity<Map<String, Any>> {
-        val response = mapOf(
-            "status" to HttpStatus.CONFLICT.value(),
-            "error" to "Data Integrity Violation",
-            "message" to (ex.rootCause?.message ?: "Operation violates data constraints")
-        )
-        return ResponseEntity(response, HttpStatus.CONFLICT)
-    }
-
-    @ExceptionHandler(IllegalStateException::class)
-    fun handleIllegalState(ex: IllegalStateException): ResponseEntity<Map<String, Any>> {
-        val response = mapOf(
-            "status" to HttpStatus.CONFLICT.value(),
-            "error" to "Conflict",
-            "message" to (ex.message ?: "Operation cannot be performed")
-        )
-        return ResponseEntity(response, HttpStatus.CONFLICT)
-    }
 
     @ExceptionHandler(Exception::class)
-    fun handleGenericException(ex: Exception): ResponseEntity<Map<String, Any>> {
-        val response = mapOf(
-            "status" to HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            "error" to "Internal Server Error",
-            "message" to (ex.message ?: "Unexpected error occurred")
+    fun handleGenericException(ex: Exception, request: HttpServletRequest): ResponseEntity<ErrorDetails> {
+        val response = ErrorDetails(
+            message = ex.message ?: "Unexpected error occurred",
+            details = "Internal Server Error",
+            localDateTime = Date(),
+            code = "INTERNAL_SERVER_ERROR",
+            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            path = request.requestURI
         )
         return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(NoHandlerFoundException::class)
+    fun handleNoHandlerFoundException(
+        ex: NoHandlerFoundException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorDetails> {
+        val errorDetails = ErrorDetails(
+            message = ex.message ?: "Not Found",
+            details = "NotFound",
+            localDateTime = Date(),
+            code = "NOT_FOUND",
+            status = HttpStatus.NOT_FOUND.value(),
+            path = request.requestURI
+        )
+        return ResponseEntity(errorDetails, HttpStatus.NOT_FOUND)
     }
 }

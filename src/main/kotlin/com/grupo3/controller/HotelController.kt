@@ -11,6 +11,8 @@ import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.validation.annotation.Validated
+
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @Controller
+@Validated
 @CrossOrigin(origins = ["*"])
 class HotelController(private val hotelService: HotelService) {
 
@@ -37,7 +40,7 @@ class HotelController(private val hotelService: HotelService) {
 
 
     @MutationMapping
-    fun createHotel(@Argument hotelCreateDto: HotelCreateDto): HotelResponseDto {
+    fun createHotel(@Argument @Valid hotelCreateDto: HotelCreateDto): HotelResponseDto {
         return hotelService.createHotel(hotelCreateDto)
     }
 }
