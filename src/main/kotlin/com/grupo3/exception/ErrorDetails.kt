@@ -17,4 +17,3 @@ data class ErrorDetails(
     val path: String? = null,
     val violations: List<Violation> = emptyList()
 )
-l

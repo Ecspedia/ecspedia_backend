@@ -1,6 +1,7 @@
 package com.grupo3.exception
 
 import graphql.GraphQLError
+import graphql.GraphQLException
 import graphql.GraphqlErrorBuilder
 import graphql.schema.DataFetchingEnvironment
 import jakarta.validation.ConstraintViolationException
@@ -98,6 +99,44 @@ class GraphQLExceptionHandler {
             .extensions(mapOf(
                 "error" to error
             ))
+            .build()
+    }
+
+    @GraphQlExceptionHandler(IllegalArgumentException::class)
+    fun handleIllegalArgument(ex: IllegalArgumentException, env: DataFetchingEnvironment): GraphQLError {
+        val error = ErrorDetails(
+            message = ex.message ?: "Invalid request",
+            details = "Invalid Argument",
+            localDateTime = Date(),
+            code = "INVALID_ARGUMENT",
+            status = 400,
+            path = env.executionStepInfo.path.toString()
+        )
+        return GraphqlErrorBuilder.newError()
+            .errorType(ErrorType.BAD_REQUEST)
+            .message(error.message)
+            .path(env.executionStepInfo.path)
+            .location(env.field.sourceLocation)
+            .extensions(mapOf("error" to error))
+            .build()
+    }
+
+    @GraphQlExceptionHandler(GraphQLException::class)
+    fun handleGraphQLException(ex: GraphQLException, env: DataFetchingEnvironment): GraphQLError {
+        val error = ErrorDetails(
+            message = ex.message ?: "Request failed",
+            details = "GraphQL Error",
+            localDateTime = Date(),
+            code = "GRAPHQL_ERROR",
+            status = 400,
+            path = env.executionStepInfo.path.toString()
+        )
+        return GraphqlErrorBuilder.newError()
+            .errorType(ErrorType.BAD_REQUEST)
+            .message(error.message)
+            .path(env.executionStepInfo.path)
+            .location(env.field.sourceLocation)
+            .extensions(mapOf("error" to error))
             .build()
     }
 }

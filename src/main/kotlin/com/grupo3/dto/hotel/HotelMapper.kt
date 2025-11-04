@@ -1,6 +1,6 @@
 package com.grupo3.dto.hotel
 
-import com.grupo3.model.Hotel
+import com.grupo3.model.hotel.Hotel
 
 
 object HotelMapper {
