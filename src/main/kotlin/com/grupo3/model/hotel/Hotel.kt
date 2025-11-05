@@ -1,4 +1,4 @@
-package com.grupo3.model
+package com.grupo3.model.hotel
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -37,3 +37,4 @@ data class Hotel(
 
     var longitude: Double? = null
 )
+
