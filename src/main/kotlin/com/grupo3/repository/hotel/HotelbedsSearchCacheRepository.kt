@@ -8,6 +8,7 @@ import java.time.Instant
 
 interface HotelbedsSearchCacheRepository : JpaRepository<HotelbedsSearchCache, String> {
 
+
     @Query(
         """
             SELECT CASE WHEN COUNT(cache) > 0 THEN true ELSE false END

@@ -28,4 +28,10 @@ class LocationController(private val locationService: LocationService) {
     fun createLocation(@Argument @Valid locationCreateDto: LocationCreateDto): LocationResponseDto {
         return locationService.createLocation(locationCreateDto)
     }
+
+    @QueryMapping
+    fun topDestinations(): List< LocationResponseDto> {
+        return locationService.getTopLocations()
+    }
+
 }

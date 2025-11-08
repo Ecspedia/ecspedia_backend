@@ -20,7 +20,7 @@ object LocationMapper {
         country = entity.country,
         state = entity.state,
         latitude = entity.latitude,
-        longitude = entity.longitude
+        longitude = entity.longitude,
+        isPopular = entity.isPopular
     )
 }
-

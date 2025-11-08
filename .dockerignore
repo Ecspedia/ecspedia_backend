@@ -38,4 +38,4 @@ docs/
 
 # Environment
 .env
-.env.local
+.env

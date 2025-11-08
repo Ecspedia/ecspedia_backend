@@ -7,6 +7,6 @@ data class LocationResponseDto(
     val country: String,
     val state: String?,
     val latitude: Double?,
-    val longitude: Double?
+    val longitude: Double?,
+    val isPopular: Boolean
 )
-

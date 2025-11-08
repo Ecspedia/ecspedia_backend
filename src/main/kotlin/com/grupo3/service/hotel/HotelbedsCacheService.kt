@@ -11,6 +11,11 @@ class HotelbedsCacheService(
     private val hotelbedsSearchCacheRepository: HotelbedsSearchCacheRepository
 ) {
 
+
+    fun getAllCachedResponse(): List<HotelbedsSearchCache>{
+       return hotelbedsSearchCacheRepository.findAll();
+    }
+
     fun getCachedResponse(
         location: String,
         checkIn: String,

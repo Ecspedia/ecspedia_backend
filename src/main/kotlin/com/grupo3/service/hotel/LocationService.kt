@@ -10,10 +10,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class LocationService(private val locationRepository: LocationRepository) {
 
+
+
     fun getAllLocations(): List<LocationResponseDto> {
         return locationRepository.findAll()
             .sortedBy { it.city.lowercase() }
             .map { LocationMapper.toResponseDto(it) }
+    }
+    fun getTopLocations(): List<LocationResponseDto> {
+        val popularDestinations =  locationRepository.findByPopularDestinations()
+        return popularDestinations.map { LocationMapper.toResponseDto(it) }
     }
 
     fun getLocationByCode(code: String): LocationResponseDto {
@@ -33,4 +39,6 @@ class LocationService(private val locationRepository: LocationRepository) {
         val saved = locationRepository.save(location)
         return LocationMapper.toResponseDto(saved)
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.grupo3.dto.hotel
 
-
 import jakarta.validation.constraints.DecimalMax
 import jakarta.validation.constraints.DecimalMin
 import jakarta.validation.constraints.Min
@@ -37,5 +36,3 @@ data class HotelCreateDto(
     @field:DecimalMax(value = "180.0", message = "Longitude must be between -180 and 180")
     val longitude: Double? = null
 )
-
-

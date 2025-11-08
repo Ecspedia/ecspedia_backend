@@ -106,7 +106,8 @@ class DataLoader(
                     country = record.country,
                     state = record.state,
                     latitude = record.latitude,
-                    longitude = record.longitude
+                    longitude = record.longitude,
+                    isPopular = record.isPopular
                 )
             }
 
@@ -119,7 +120,7 @@ class DataLoader(
     private fun seedHotelbedsCache() {
         val checkIn = "2025-11-05"
         val checkOut = "2025-11-10"
-        val adults = 3
+        val adults = 1
         val locationName = "Santiago"
 
         if (hotelbedsSearchCacheRepository.existsForSearch(
@@ -163,6 +164,7 @@ class DataLoader(
         val country: String,
         val state: String? = null,
         val latitude: Double? = null,
-        val longitude: Double? = null
+        val longitude: Double? = null,
+        val isPopular: Boolean = false
     )
 }

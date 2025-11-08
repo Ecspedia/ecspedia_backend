@@ -1,37 +1,25 @@
 package com.grupo3.service.hotel
 
-import com.grupo3.dto.hotel.HotelCreateDto
-import com.grupo3.dto.hotel.HotelMapper
-import com.grupo3.dto.hotel.HotelResponseDto
-import com.grupo3.repository.hotel.HotelRepository
+import com.grupo3.model.hotel.HotelbedsSearchCache
+import com.grupo3.dto.hotel.hotelbeds.CachedHotelQueryDto
 import com.grupo3.repository.hotel.LocationRepository
 import org.springframework.stereotype.Service
+import com.grupo3.service.hotel.util.HotelbedsPayloadBuilder
+import com.grupo3.service.hotel.util.HotelbedsPayloadParser
 
 @Service
 class HotelService(
-    private val hotelRepository: HotelRepository,
     private val locationRepository: LocationRepository,
     private val hotelbedsClient: HotelbedsClient,
     private val hotelbedsCacheService: HotelbedsCacheService
 ) {
 
-    fun createHotel(hotelDto: HotelCreateDto): HotelResponseDto {
-        val hotel = HotelMapper.toEntity(hotelDto)
-        val savedHotel = hotelRepository.save(hotel)
-        return HotelMapper.toResponseDto(savedHotel)
+    fun getAllCacheQuerys(): List<CachedHotelQueryDto> {
+        return hotelbedsCacheService.getAllCachedResponse()
+            .map { it.toDto() }
     }
 
-    fun getAllHotels(): List<HotelResponseDto> {
-        return hotelRepository.findAll()
-            .map { HotelMapper.toResponseDto(it) }
-    }
-
-    fun getHotelsByLocation(location: String): List<HotelResponseDto> {
-        return hotelRepository.findByLocation(location)
-            .map { HotelMapper.toResponseDto(it) }
-    }
-
-    fun hotelsByLocationName(location: String, checkIn: String, checkOut: String, adults: Int): String {
+    fun getHotelsByLocation(location: String, checkIn: String, checkOut: String, adults: Int): CachedHotelQueryDto {
         val normalizedLocation = location.trim()
         val locationObject = locationRepository.findByCity(normalizedLocation)
             .orElseThrow { IllegalArgumentException("Location not found for city: $normalizedLocation") }
@@ -43,39 +31,19 @@ class HotelService(
             adults
         )
         if (cached != null) {
-            return cached.responsePayload
+            println("Cached hotel by location: $location")
+            return cached.toDto()
         }
 
-        val payload = """
-            {
-                "stay": {
-                    "checkIn": "$checkIn",
-                    "checkOut": "$checkOut"
-                },
-                "occupancies": [
-                    {
-                        "rooms": 1,
-                        "adults": $adults,
-                        "children": 0
-                    }
-                ],
-                "geolocation": {
-                    "latitude": ${locationObject.latitude},
-                    "longitude": ${locationObject.longitude},
-                    "radius": 20,
-                    "unit": "km"
-                },
-                "filter": {
-                    "maxCategory": 4,
-                    "minCategory": 2,
-                    "maxRooms": 1,
-                    "maxHotels": 2
-                }
-            }
-        """.trimIndent()
+        val payload = HotelbedsPayloadBuilder.buildAvailabilityPayload(
+            location = locationObject,
+            checkIn = checkIn,
+            checkOut = checkOut,
+            adults = adults
+        )
 
         val response = hotelbedsClient.searchAvailability(payload)
-        hotelbedsCacheService.saveCacheEntry(
+        val hotelbedsSearchCache = hotelbedsCacheService.saveCacheEntry(
             location = normalizedLocation,
             checkIn = checkIn,
             checkOut = checkOut,
@@ -83,7 +51,22 @@ class HotelService(
             responsePayload = response,
             success = true
         )
-        return response
+        return hotelbedsSearchCache.toDto()
+    }
+
+    private fun HotelbedsSearchCache.toDto(): CachedHotelQueryDto {
+        val parsed = HotelbedsPayloadParser.parseAvailability(responsePayload)
+        return CachedHotelQueryDto(
+            id = requireNotNull(id) { "HotelbedsSearchCache id must not be null" },
+            location = location,
+            checkIn = checkIn,
+            checkOut = checkOut,
+            adults = adults,
+            responsePayload = parsed?.hotels,
+            fetchedAt = fetchedAt,
+            expiresAt = expiresAt,
+            success = success,
+            auditData = parsed?.auditData
+        )
     }
 }
-

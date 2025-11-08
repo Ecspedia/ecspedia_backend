@@ -1,26 +1,26 @@
+
+
 type Query {
     #User Queries
     getUserById(id: ID!): User
     getAllUsers: [User!]!
 
     #Hotel Queries
-    hotels: [Hotel!]!
-    hotelById(id: ID!): Hotel
-    hotelsByLocation(location: String!): [Hotel!]!
-    hotelsByLocationName(location: String!, checkIn: String!, checkOut: String!, adults: Int!): String!
+    searchHotelsByLocation(location: String!, checkIn: String!, checkOut: String!, adults: Int!): HotelbedsSearchCache!
+    cachedHotelQueries: [HotelbedsSearchCache!]!
 
     #Location Queries
     locations: [Location!]!
     locationByCode(code: String!): Location
+    topDestinations: [Location!]!
 
-    #Hotelbeds Test Query
-    hotelbedsSampleSearch: String!
 }
 
 type Mutation {
     registerUser(userRegistrationDto: UserRegistrationInput!): User!
     createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
     createLocation(locationCreateDto: LocationCreateInput!): Location!
+    updateImage(imageId: ID!, imageUrl: String!): ImageUpdateResponse!
 }
 
 
@@ -68,6 +68,83 @@ input HotelCreateInput {
     longitude: Float
 }
 
+type HotelbedsSearchCache {
+    id: ID!
+    checkIn: String!
+    checkOut: String!
+    adults: Int!
+    location: String!
+    responsePayload: HotelbedsHotelCollection
+    fetchedAt: String!
+    expiresAt: String!
+    success: Boolean!
+    auditData: HotelbedsAuditData
+}
+
+type HotelbedsHotelCollection {
+    total: Int
+    hotels: [HotelbedsHotel!]
+    checkIn: String
+    checkOut: String
+    currency: String
+}
+
+type HotelbedsHotel {
+    code: ID
+    name: String
+    destinationCode: String
+    destinationName: String
+    categoryCode: String
+    categoryName: String
+    latitude: String
+    longitude: String
+    minRate: String
+    maxRate: String
+    rooms: [HotelbedsRoom!]
+}
+
+type HotelbedsRoom {
+    code: String
+    name: String
+    rates: [HotelbedsRate!]
+}
+
+type HotelbedsRate {
+    rateKey: String
+    rateType: String
+    rateClass: String
+    net: String
+    currency: String
+    rooms: Int
+    adults: Int
+    children: Int
+    boardCode: String
+    boardName: String
+    paymentType: String
+    packaging: Boolean
+    allotment: Int
+    cancellationPolicies: [HotelbedsCancellationPolicy!]
+    offers: [HotelbedsOffer!]
+}
+
+type HotelbedsCancellationPolicy {
+    from: String
+    amount: String
+}
+
+type HotelbedsOffer {
+    code: String
+    name: String
+    amount: String
+}
+
+type HotelbedsAuditData {
+    token: String
+    processTime: String
+    timestamp: String
+    environment: String
+}
+
 type Location {
     id: ID!
     code: String!
@@ -76,6 +153,7 @@ type Location {
     state: String
     latitude: Float
     longitude: Float
+    isPopular: Boolean
 }
 
 input LocationCreateInput {
@@ -85,4 +163,10 @@ input LocationCreateInput {
     state: String
     latitude: Float
     longitude: Float
+}
+
+type ImageUpdateResponse {
+    imageId: ID!
+    imageUrl: String!
+    message: String!
 }
