@@ -4,8 +4,6 @@ import com.grupo3.dto.hotel.HotelCreateDto
 import com.grupo3.dto.hotel.HotelResponseDto
 import com.grupo3.service.hotel.HotelService
 import jakarta.validation.Valid
-import org.springframework.cache.annotation.Cacheable
-
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin
 @CrossOrigin(origins = ["*"])
 class HotelController(private val hotelService: HotelService) {
 
-    @Cacheable(value = ["hotelsByLocation"], key = "#locationQuery.toLowerCase()")
     @QueryMapping(name = "hotelsByLocation")
     fun searchHotelsByLocation(
         @Argument location: String

@@ -11,14 +11,14 @@ interface LocationRepository : JpaRepository<Location, String> {
     fun findByCity(city: String): Optional<Location>
 
     @Query(
-        """
-      SELECT l
-      FROM Location l
-      WHERE l.isPopular = true
-      ORDER BY l.city ASC
       """
+            SELECT l
+            FROM Location l
+            WHERE l.isPopular = true
+            ORDER BY l.city ASC
+        """
     )
-    fun findByPopularDestinations(): List<Location>
+    fun findTopPopularDestinations(): List<Location>
 
     @Query(
         """

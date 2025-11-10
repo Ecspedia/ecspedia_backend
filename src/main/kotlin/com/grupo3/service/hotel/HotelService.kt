@@ -9,6 +9,7 @@ import com.grupo3.dto.location.LocationMapper
 import com.grupo3.repository.hotel.HotelRepository
 import com.grupo3.service.hotel.dto.LiteApiSearchResponse
 import com.grupo3.service.hotel.dto.toResponseDto
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -21,7 +22,9 @@ class HotelService(
 
     private val mapper = jacksonObjectMapper()
 
+    @Cacheable(value = ["hotelsByLocation"], key = "#locationQuery.toLowerCase()")
     fun searchHotelsByLocation(locationQuery: String): List<HotelResponseDto> {
+
         val location = locationService.getLocationByCity(locationQuery)
         val json = hotelClient.searchHotels(LocationMapper.toEntity(location))
         val response: LiteApiSearchResponse = mapper.readValue(json)

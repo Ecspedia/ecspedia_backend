@@ -18,7 +18,7 @@ class LocationService(private val locationRepository: LocationRepository) {
             .map { LocationMapper.toResponseDto(it) }
     }
     fun getTopLocations(): List<LocationResponseDto> {
-        val popularDestinations =  locationRepository.findByPopularDestinations()
+        val popularDestinations = locationRepository.findTopPopularDestinations()
         return popularDestinations.map { LocationMapper.toResponseDto(it) }
     }
     fun getLocation(code: String, city: String): LocationResponseDto {
