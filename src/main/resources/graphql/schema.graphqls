@@ -4,26 +4,36 @@ type Query {
     #User Queries
     getUserById(id: ID!): User
     getAllUsers: [User!]!
+    me:User
 
     #Hotel Queries
     hotelsByLocation(location: String!): [Hotel!]!
     popularHotels: [Hotel!]!
     hotels: [Hotel!]!
+    hotelById(id: ID!): Hotel
+    hotelsByLocationName(location: String!, checkIn: String!, checkOut: String!, adults: Int!): String!
     hotelExists(id: ID!): Boolean!
 
     #Booking Queries
     bookings: [Booking!]!
     bookingsByUserEmail(email: String!): [Booking!]!
 
-
     #Location Queries
     locations: [Location!]!
     topLocations: [Location!]!
+    locationByCode(code: String!): Location
 
+    #Hotelbeds Test Query
+    hotelbedsSampleSearch: String!
 }
 
 type Mutation {
     registerUser(userRegistrationDto: UserRegistrationInput!): User!
+
+    login(authRequest: AuthInput!): AuthResponse!
+    forgotPassword(email: String!): PasswordResetResponse!
+    resetPassword(email: String!, token: String!, newPassword: String!): PasswordResetResponse!
+    logout: Boolean!
 
     createLocation(locationCreateDto: LocationCreateInput!): Location!
     createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
@@ -51,9 +61,23 @@ input UserRegistrationInput {
     password: String!
 }
 
+input AuthInput {
+    username: String!  # Can be either username or email
+    password: String!
+}
+
+type AuthResponse {
+    token: String!
+}
+
 type UserRegistrationResponse {
     message: String!
     user: User
+}
+
+type PasswordResetResponse {
+    success: Boolean!
+    message: String!
 }
 
 
