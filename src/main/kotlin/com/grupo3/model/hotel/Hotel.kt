@@ -2,20 +2,19 @@ package com.grupo3.model.hotel
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 import java.time.Instant
+import java.util.UUID
 
 @Entity
 @Table(name = "hotels")
 data class Hotel(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    var id: String? = null,
+    @Column(nullable = false, updatable = false)
+    var id: String = UUID.randomUUID().toString(),
 
     @Column(nullable = false)
     var name: String? = null,

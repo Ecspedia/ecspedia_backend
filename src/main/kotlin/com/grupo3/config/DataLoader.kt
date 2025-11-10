@@ -2,20 +2,26 @@ package com.grupo3.config
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.grupo3.model.User
 import com.grupo3.model.hotel.Hotel
 import com.grupo3.model.hotel.HotelAccessibilityAttributes
 import com.grupo3.model.hotel.Location
+import com.grupo3.repository.UserRepository
 import com.grupo3.repository.hotel.LocationRepository
 import com.grupo3.repository.hotel.HotelRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.io.ResourceLoader
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.time.Instant
+import java.util.UUID
 
 @Component
 class DataLoader(
     private val locationRepository: LocationRepository,
     private val hotelRepository: HotelRepository,
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder,
     private val resourceLoader: ResourceLoader
 ) : CommandLineRunner {
 
@@ -24,6 +30,7 @@ class DataLoader(
     override fun run(vararg args: String?) {
         seedLocations()
         seedHotels()
+        seedDefaultUser()
     }
 
     private fun seedLocations() {
@@ -56,6 +63,25 @@ class DataLoader(
         }
     }
 
+    private fun seedDefaultUser() {
+        val defaultUsername = "demo_user"
+        val defaultEmail = "demo@ecspedia.com"
+        val defaultPassword = "password123"
+
+        if (userRepository.existsByEmail(defaultEmail)) {
+            return
+        }
+
+        val user = User(
+            username = defaultUsername,
+            email = defaultEmail,
+            password = passwordEncoder.encode(defaultPassword)
+        )
+
+        userRepository.save(user)
+        println("Seeded default user with email $defaultEmail")
+    }
+
     private fun seedHotels() {
         val resource = resourceLoader.getResource("classpath:data/hotels.json")
         if (!resource.exists()) {
@@ -66,11 +92,20 @@ class DataLoader(
             objectMapper.readValue(stream, object : TypeReference<List<HotelSeedRecord>>() {})
         }
 
-        val newHotels = seedRecords
-            .filter { record -> !hotelRepository.existsByNameIgnoreCase(record.name.trim()) }
-            .map { record ->
+        val newHotels = seedRecords.mapNotNull { record ->
+            val trimmedName = record.name.trim()
+
+            val exists = when {
+                record.id != null -> hotelRepository.existsById(record.id)
+                else -> hotelRepository.existsByNameIgnoreCase(trimmedName)
+            }
+
+            if (exists) {
+                null
+            } else {
                 Hotel(
-                    name = record.name.trim(),
+                    id = record.id ?: UUID.randomUUID().toString(),
+                    name = trimmedName,
                     location = record.location.trim(),
                     image = record.image,
                     isAvailable = true,
@@ -95,6 +130,7 @@ class DataLoader(
                     deletedAt = record.deletedAt?.let(Instant::parse)
                 )
             }
+        }
 
         if (newHotels.isNotEmpty()) {
             hotelRepository.saveAll(newHotels)
@@ -112,6 +148,7 @@ class DataLoader(
         val isPopular: Boolean = false
     )
     private data class HotelSeedRecord(
+        val id: String? = null,
         val name: String,
         val location: String,
         val hotelDescription: String?,

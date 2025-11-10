@@ -6,13 +6,19 @@ type Query {
     getAllUsers: [User!]!
 
     #Hotel Queries
-    searchHotelsByLocation(location: String!): [Hotel!]!
-    topPopularHotels: [Hotel!]!
+    hotelsByLocation(location: String!): [Hotel!]!
+    popularHotels: [Hotel!]!
+    hotels: [Hotel!]!
+    hotelExists(id: ID!): Boolean!
+
+    #Booking Queries
+    bookings: [Booking!]!
+    bookingsByUserEmail(email: String!): [Booking!]!
 
 
     #Location Queries
     locations: [Location!]!
-    topDestinations: [Location!]!
+    topLocations: [Location!]!
 
 }
 
@@ -20,7 +26,15 @@ type Mutation {
     registerUser(userRegistrationDto: UserRegistrationInput!): User!
 
     createLocation(locationCreateDto: LocationCreateInput!): Location!
-    saveHotel(hotelCreateDto: HotelCreateInput!): Hotel!
+    createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
+    createBooking(
+        hotelId: ID!
+        userId: ID!
+        startTime: String!
+        endTime: String!
+        price: Float
+        currency: String
+    ): Booking!
 
 }
 
@@ -84,6 +98,7 @@ type HotelAccessibilityAttributes {
 }
 
 input HotelCreateInput {
+    id: ID
     name: String!
     location: String!
     image: String
@@ -145,4 +160,24 @@ type ImageUpdateResponse {
     imageId: ID!
     imageUrl: String!
     message: String!
+}
+
+type Booking {
+    id: ID!
+    hotelId: ID!
+    userId: ID!
+    startTime: String!
+    endTime: String!
+    status: BookingStatus!
+    price: Float
+    currency: String
+    createdAt: String!
+    confirmedAt: String
+    canceledAt: String
+}
+
+enum BookingStatus {
+    PENDING
+    CONFIRMED
+    CANCELED
 }

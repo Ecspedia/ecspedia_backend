@@ -26,7 +26,7 @@ class LocationController(private val locationService: LocationService) {
         return locationService.createLocation(locationCreateDto)
     }
 
-    @QueryMapping
+    @QueryMapping(name = "topLocations")
     fun topDestinations(): List< LocationResponseDto> {
         return locationService.getTopLocations()
     }

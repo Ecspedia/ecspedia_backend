@@ -41,4 +41,9 @@ class HotelService(
     fun getTopPopularHotels(): List<HotelResponseDto> =
         hotelRepository.findTop10ByIsAvailableTrueOrderByRatingDesc()
             .map { HotelMapper.toResponseDto(it) }
+
+    fun getAllHotels(): List<HotelResponseDto> =
+        hotelRepository.findAll().map { HotelMapper.toResponseDto(it) }
+
+    fun hotelExists(id: String): Boolean = hotelRepository.existsById(id)
 }

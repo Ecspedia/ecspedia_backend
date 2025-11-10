@@ -4,6 +4,8 @@ import com.grupo3.dto.hotel.HotelCreateDto
 import com.grupo3.dto.hotel.HotelResponseDto
 import com.grupo3.service.hotel.HotelService
 import jakarta.validation.Valid
+import org.springframework.cache.annotation.Cacheable
+
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -16,15 +18,24 @@ import org.springframework.web.bind.annotation.CrossOrigin
 @CrossOrigin(origins = ["*"])
 class HotelController(private val hotelService: HotelService) {
 
-    @QueryMapping
+    @Cacheable(value = ["hotelsByLocation"], key = "#locationQuery.toLowerCase()")
+    @QueryMapping(name = "hotelsByLocation")
     fun searchHotelsByLocation(
         @Argument location: String
     ): List<HotelResponseDto> = hotelService.searchHotelsByLocation(location)
 
-    @QueryMapping
+    @QueryMapping(name = "popularHotels")
     fun topPopularHotels(): List<HotelResponseDto> = hotelService.getTopPopularHotels()
 
-    @MutationMapping
+    @QueryMapping(name = "hotels")
+    fun getAllHotels(): List<HotelResponseDto> = hotelService.getAllHotels()
+
+    @QueryMapping
+    fun hotelExists(@Argument id: String): Boolean = hotelService.hotelExists(id)
+
+    @MutationMapping(name = "createHotel")
     fun saveHotel(@Argument @Valid hotelCreateDto: HotelCreateDto): HotelResponseDto =
         hotelService.saveHotel(hotelCreateDto)
+
+
 }

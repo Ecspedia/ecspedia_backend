@@ -2,10 +2,12 @@ package com.grupo3.dto.hotel
 
 import com.grupo3.model.hotel.Hotel
 import com.grupo3.model.hotel.HotelAccessibilityAttributes
+import java.util.UUID
 
 object HotelMapper {
 
     fun toEntity(dto: HotelCreateDto) = Hotel(
+        id = dto.id ?: UUID.randomUUID().toString(),
         name = dto.name,
         location = dto.location,
         image = dto.image,
@@ -32,7 +34,7 @@ object HotelMapper {
     )
 
     fun toResponseDto(hotel: Hotel) = HotelResponseDto(
-        id = hotel.id!!,
+        id = hotel.id,
         name = hotel.name!!,
         location = hotel.location!!,
         image = hotel.image,

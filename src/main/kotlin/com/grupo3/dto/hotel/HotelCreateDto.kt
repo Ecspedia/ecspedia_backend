@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull
 import java.time.Instant
 
 data class HotelCreateDto(
+    val id: String? = null,
     @field:NotBlank(message = "Name is required")
     val name: String,
 
