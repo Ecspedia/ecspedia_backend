@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface HotelRepository : JpaRepository<Hotel, String> {
     fun findByLocation(location: String): List<Hotel>
+    fun findTop10ByIsAvailableTrueOrderByRatingDesc(): List<Hotel>
+    fun existsByNameIgnoreCase(name: String): Boolean
 }
-

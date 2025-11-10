@@ -1,307 +1,371 @@
 [
   {
-    "code": "CA-OTT",
-    "city": "Ottawa",
+    "code": "CA",
+    "city": "ottawa",
     "country": "Canada",
     "state": null,
     "latitude": 45.4215,
-    "longitude": -75.6972
+    "longitude": -75.6972,
+    "isPopular": false
   },
   {
-    "code": "US-WDC",
-    "city": "Washington",
+    "code": "US",
+    "city": "washington",
     "country": "United States",
     "state": "DC",
     "latitude": 38.9072,
-    "longitude": -77.0369
+    "longitude": -77.0369,
+    "isPopular": false
   },
   {
-    "code": "MX-MEX",
-    "city": "Mexico City",
+    "code": "MX",
+    "city": "mexico city",
     "country": "Mexico",
     "state": null,
     "latitude": 19.4326,
-    "longitude": -99.1332
+    "longitude": -99.1332,
+    "isPopular": false
   },
   {
-    "code": "GT-GUA",
-    "city": "Guatemala City",
+    "code": "GT",
+    "city": "guatemala city",
     "country": "Guatemala",
     "state": null,
     "latitude": 14.6349,
-    "longitude": -90.5069
+    "longitude": -90.5069,
+    "isPopular": false
   },
   {
-    "code": "BZ-BEL",
-    "city": "Belmopan",
+    "code": "BZ",
+    "city": "belmopan",
     "country": "Belize",
     "state": null,
-    "latitude": 17.2510,
-    "longitude": -88.7590
+    "latitude": 17.251,
+    "longitude": -88.759,
+    "isPopular": false
   },
   {
-    "code": "HN-TEG",
-    "city": "Tegucigalpa",
+    "code": "HN",
+    "city": "tegucigalpa",
     "country": "Honduras",
     "state": null,
     "latitude": 14.0723,
-    "longitude": -87.1921
+    "longitude": -87.1921,
+    "isPopular": false
   },
   {
-    "code": "SV-SSV",
-    "city": "San Salvador",
+    "code": "SV",
+    "city": "san salvador",
     "country": "El Salvador",
     "state": null,
     "latitude": 13.6929,
-    "longitude": -89.2182
+    "longitude": -89.2182,
+    "isPopular": false
   },
   {
-    "code": "NI-MGA",
-    "city": "Managua",
+    "code": "NI",
+    "city": "managua",
     "country": "Nicaragua",
     "state": null,
-    "latitude": 12.1140,
-    "longitude": -86.2362
+    "latitude": 12.114,
+    "longitude": -86.2362,
+    "isPopular": false
   },
   {
-    "code": "CR-SJO",
-    "city": "San Jose",
+    "code": "CR",
+    "city": "san jose",
     "country": "Costa Rica",
     "state": null,
     "latitude": 9.9281,
-    "longitude": -84.0907
+    "longitude": -84.0907,
+    "isPopular": false
   },
   {
-    "code": "PA-PTY",
-    "city": "Panama City",
+    "code": "PA",
+    "city": "panama city",
     "country": "Panama",
     "state": null,
     "latitude": 8.9824,
-    "longitude": -79.5199
+    "longitude": -79.5199,
+    "isPopular": false
   },
   {
-    "code": "CU-HAV",
-    "city": "Havana",
+    "code": "CU",
+    "city": "havana",
     "country": "Cuba",
     "state": null,
     "latitude": 23.1136,
-    "longitude": -82.3666
+    "longitude": -82.3666,
+    "isPopular": false
   },
   {
-    "code": "HT-PAP",
-    "city": "Port-au-Prince",
+    "code": "HT",
+    "city": "port-au-prince",
     "country": "Haiti",
     "state": null,
     "latitude": 18.5944,
-    "longitude": -72.3074
+    "longitude": -72.3074,
+    "isPopular": false
   },
   {
-    "code": "DO-SDQ",
-    "city": "Santo Domingo",
+    "code": "DO",
+    "city": "santo domingo",
     "country": "Dominican Republic",
     "state": null,
     "latitude": 18.4861,
-    "longitude": -69.9312
+    "longitude": -69.9312,
+    "isPopular": false
   },
   {
-    "code": "JM-KIN",
-    "city": "Kingston",
+    "code": "JM",
+    "city": "kingston",
     "country": "Jamaica",
     "state": null,
     "latitude": 17.9712,
-    "longitude": -76.7936
+    "longitude": -76.7936,
+    "isPopular": false
   },
   {
-    "code": "BS-NAS",
-    "city": "Nassau",
+    "code": "BS",
+    "city": "nassau",
     "country": "Bahamas",
     "state": null,
     "latitude": 25.0443,
-    "longitude": -77.3504
+    "longitude": -77.3504,
+    "isPopular": false
   },
   {
-    "code": "AR-BUE",
-    "city": "Buenos Aires",
+    "code": "AR",
+    "city": "buenos aires",
     "country": "Argentina",
     "state": null,
     "latitude": -34.6037,
-    "longitude": -58.3816
+    "longitude": -58.3816,
+    "isPopular": false
   },
   {
-    "code": "BO-LPZ",
-    "city": "La Paz",
+    "code": "BO",
+    "city": "la paz",
     "country": "Bolivia",
     "state": null,
     "latitude": -16.4897,
-    "longitude": -68.1193
+    "longitude": -68.1193,
+    "isPopular": false
   },
   {
-    "code": "BR-BSB",
-    "city": "Brasilia",
+    "code": "BR",
+    "city": "brasilia",
     "country": "Brazil",
     "state": null,
     "latitude": -15.8267,
-    "longitude": -47.9218
+    "longitude": -47.9218,
+    "isPopular": false
   },
   {
-    "code": "CL-SCL",
-    "city": "Santiago",
+    "code": "CL",
+    "city": "santiago",
     "country": "Chile",
     "state": null,
     "latitude": -33.4489,
-    "longitude": -70.6693
+    "longitude": -70.6693,
+    "isPopular": true
   },
   {
-    "code": "CO-BOG",
-    "city": "Bogota",
+    "code": "CO",
+    "city": "bogota",
     "country": "Colombia",
     "state": null,
-    "latitude": 4.7110,
-    "longitude": -74.0721
+    "latitude": 4.711,
+    "longitude": -74.0721,
+    "isPopular": false
   },
   {
-    "code": "EC-QUI",
-    "city": "Quito",
+    "code": "EC",
+    "city": "quito",
     "country": "Ecuador",
     "state": null,
     "latitude": -0.1807,
-    "longitude": -78.4678
+    "longitude": -78.4678,
+    "isPopular": false
   },
   {
-    "code": "GY-GEO",
-    "city": "Georgetown",
+    "code": "GY",
+    "city": "georgetown",
     "country": "Guyana",
     "state": null,
     "latitude": 6.8013,
-    "longitude": -58.1551
+    "longitude": -58.1551,
+    "isPopular": false
   },
   {
-    "code": "PY-ASU",
-    "city": "Asuncion",
+    "code": "PY",
+    "city": "asuncion",
     "country": "Paraguay",
     "state": null,
     "latitude": -25.2637,
-    "longitude": -57.5759
+    "longitude": -57.5759,
+    "isPopular": false
   },
   {
-    "code": "PE-LIM",
-    "city": "Lima",
+    "code": "PE",
+    "city": "lima",
     "country": "Peru",
     "state": null,
     "latitude": -12.0464,
-    "longitude": -77.0428
+    "longitude": -77.0428,
+    "isPopular": false
   },
   {
-    "code": "SR-PBM",
-    "city": "Paramaribo",
+    "code": "SR",
+    "city": "paramaribo",
     "country": "Suriname",
     "state": null,
-    "latitude": 5.8520,
-    "longitude": -55.2038
+    "latitude": 5.852,
+    "longitude": -55.2038,
+    "isPopular": false
   },
   {
-    "code": "UY-MVD",
-    "city": "Montevideo",
+    "code": "UY",
+    "city": "montevideo",
     "country": "Uruguay",
     "state": null,
     "latitude": -34.9011,
-    "longitude": -56.1645
+    "longitude": -56.1645,
+    "isPopular": false
   },
   {
-    "code": "VE-CCS",
-    "city": "Caracas",
+    "code": "VE",
+    "city": "caracas",
     "country": "Venezuela",
     "state": null,
     "latitude": 10.4806,
-    "longitude": -66.9036
+    "longitude": -66.9036,
+    "isPopular": false
   },
   {
-    "code": "US-NYC",
-    "city": "New York",
+    "code": "US",
+    "city": "new york",
     "country": "United States",
     "state": "NY",
     "latitude": 40.7128,
-    "longitude": -74.0060
+    "longitude": -74.006,
+    "isPopular": true
   },
   {
-    "code": "US-LAX",
-    "city": "Los Angeles",
+    "code": "US",
+    "city": "los angeles",
     "country": "United States",
     "state": "CA",
     "latitude": 34.0522,
-    "longitude": -118.2437
+    "longitude": -118.2437,
+    "isPopular": false
   },
   {
-    "code": "US-CHI",
-    "city": "Chicago",
+    "code": "US",
+    "city": "chicago",
     "country": "United States",
     "state": "IL",
     "latitude": 41.8781,
-    "longitude": -87.6298
+    "longitude": -87.6298,
+    "isPopular": false
   },
   {
-    "code": "US-MIA",
-    "city": "Miami",
+    "code": "US",
+    "city": "miami",
     "country": "United States",
     "state": "FL",
     "latitude": 25.7617,
-    "longitude": -80.1918
+    "longitude": -80.1918,
+    "isPopular": false
   },
   {
-    "code": "US-SFO",
-    "city": "San Francisco",
+    "code": "US",
+    "city": "san francisco",
     "country": "United States",
     "state": "CA",
     "latitude": 37.7749,
-    "longitude": -122.4194
+    "longitude": -122.4194,
+    "isPopular": false
   },
   {
-    "code": "US-DAL",
-    "city": "Dallas",
+    "code": "US",
+    "city": "dallas",
     "country": "United States",
     "state": "TX",
     "latitude": 32.7767,
-    "longitude": -96.7970
+    "longitude": -96.797,
+    "isPopular": false
   },
   {
-    "code": "US-SEA",
-    "city": "Seattle",
+    "code": "US",
+    "city": "seattle",
     "country": "United States",
     "state": "WA",
     "latitude": 47.6062,
-    "longitude": -122.3321
+    "longitude": -122.3321,
+    "isPopular": false
   },
   {
-    "code": "US-BOS",
-    "city": "Boston",
+    "code": "US",
+    "city": "boston",
     "country": "United States",
     "state": "MA",
     "latitude": 42.3601,
-    "longitude": -71.0589
+    "longitude": -71.0589,
+    "isPopular": false
   },
   {
-    "code": "US-ATL",
-    "city": "Atlanta",
+    "code": "US",
+    "city": "atlanta",
     "country": "United States",
     "state": "GA",
-    "latitude": 33.7490,
-    "longitude": -84.3880
+    "latitude": 33.749,
+    "longitude": -84.388,
+    "isPopular": false
   },
   {
-    "code": "US-DEN",
-    "city": "Denver",
+    "code": "US",
+    "city": "denver",
     "country": "United States",
     "state": "CO",
     "latitude": 39.7392,
-    "longitude": -104.9903
+    "longitude": -104.9903,
+    "isPopular": false
   },
   {
-    "code": "US-HNL",
-    "city": "Honolulu",
+    "code": "US",
+    "city": "honolulu",
     "country": "United States",
     "state": "HI",
     "latitude": 21.3069,
-    "longitude": -157.8583
+    "longitude": -157.8583,
+    "isPopular": false
+  },
+  {
+    "code": "GB",
+    "city": "london",
+    "country": "United Kingdom",
+    "state": null,
+    "latitude": 51.5074,
+    "longitude": -0.1278,
+    "isPopular": true
+  },
+  {
+    "code": "CO",
+    "city": "medellin",
+    "country": "Colombia",
+    "state": null,
+    "latitude": 6.2442,
+    "longitude": -75.5812,
+    "isPopular": true
+  },
+  {
+    "code": "PE",
+    "city": "cusco",
+    "country": "Peru",
+    "state": null,
+    "latitude": -13.5319,
+    "longitude": -71.9675,
+    "isPopular": true
   }
 ]
-

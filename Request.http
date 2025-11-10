@@ -90,42 +90,117 @@ Content-Type: application/json
 
 ###
 
+<<<<<<< HEAD
+# GraphQL mutation: create booking
+=======
 #Login Mutation
+>>>>>>> origin/dev
 POST http://localhost:8080/graphql
 Content-Type: application/json
 
 {
+<<<<<<< HEAD
+  "query": "mutation CreateBooking($hotelId: String!, $userId: ID!, $startTime: String!, $endTime: String!, $price: Long, $currency: String) { createBooking(hotelId: $hotelId, userId: $userId, startTime: $startTime, endTime: $endTime, price: $price, currency: $currency) { id hotelId userId startTime endTime status price currency createdAt confirmedAt canceledAt } }",
+  "variables": {
+    "hotelId": "REPLACE_WITH_HOTEL_ID",
+    "userId": "REPLACE_WITH_USER_ID",
+    "startTime": "2024-11-01T15:00:00Z",
+    "endTime": "2024-11-05T11:00:00Z",
+    "price": 45000,
+    "currency": "USD"
+  }
+=======
   "query": "mutation { login(authRequest: { username: \"testuser\", password: \"password123\" }) { token } }"
+>>>>>>> origin/dev
 }
 
 ###
 
+<<<<<<< HEAD
+# GraphQL query: all hotels
+=======
 #Register User Mutation
+>>>>>>> origin/dev
 POST http://localhost:8080/graphql
 Content-Type: application/json
 
 {
+<<<<<<< HEAD
+  "query": "query { hotels { id name location pricePerNight rating reviewCount isAvailable } }"
+=======
   "query": "mutation { registerUser(userRegistrationDto: { username: \"newuser\", email: \"newuser@example.com\", password: \"password123\" }) { id username email } }"
+>>>>>>> origin/dev
 }
 
 ###
 
+<<<<<<< HEAD
+# GraphQL query: hotel exists
+=======
 #Get All Users Query
+>>>>>>> origin/dev
 POST http://localhost:8080/graphql
 Content-Type: application/json
 
 {
+<<<<<<< HEAD
+  "query": "query($id: ID!) { hotelExists(id: $id) }",
+  "variables": {
+    "id": "REPLACE_WITH_HOTEL_ID"
+  }
+=======
   "query": "{ getAllUsers { id username email } }"
+>>>>>>> origin/dev
 }
 
 ###
 
+<<<<<<< HEAD
+# GraphQL mutation: create hotel with explicit id
+=======
 #Get User By ID Query
+>>>>>>> origin/dev
 POST http://localhost:8080/graphql
 Content-Type: application/json
 
 {
+<<<<<<< HEAD
+  "query": "mutation SaveHotel($input: HotelCreateInput!) { createHotel(hotelCreateDto: $input) { id name location pricePerNight isAvailable } }",
+  "variables": {
+    "input": {
+      "id": "hotel-demo-001",
+      "name": "Demo Hotel",
+      "location": "Sample City",
+      "pricePerNight": 199.99,
+      "isAvailable": true
+    }
+  }
+}
+
+###
+
+# GraphQL query: all bookings
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query { bookings { id hotelId userId startTime endTime status price currency createdAt } }"
+}
+
+###
+
+# GraphQL query: bookings by user email
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{
+  "query": "query($email: String!) { bookingsByUserEmail(email: $email) { id hotelId userId startTime endTime status price currency createdAt } }",
+  "variables": {
+    "email": "replace_with_user_email@example.com"
+  }
+=======
   "query": "{ getUserById(id: \"1\") { id username email } }"
+>>>>>>> origin/dev
 }
 
 ###

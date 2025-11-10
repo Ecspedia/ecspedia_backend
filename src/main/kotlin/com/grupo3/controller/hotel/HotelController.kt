@@ -16,22 +16,23 @@ import org.springframework.web.bind.annotation.CrossOrigin
 @CrossOrigin(origins = ["*"])
 class HotelController(private val hotelService: HotelService) {
 
-    @QueryMapping
-    fun hotels(): List<HotelResponseDto> = hotelService.getAllHotels()
+    @QueryMapping(name = "hotelsByLocation")
+    fun searchHotelsByLocation(
+        @Argument location: String
+    ): List<HotelResponseDto> = hotelService.searchHotelsByLocation(location)
+
+    @QueryMapping(name = "popularHotels")
+    fun topPopularHotels(): List<HotelResponseDto> = hotelService.getTopPopularHotels()
+
+    @QueryMapping(name = "hotels")
+    fun getAllHotels(): List<HotelResponseDto> = hotelService.getAllHotels()
 
     @QueryMapping
-    fun hotelsByLocation(@Argument location: String): List<HotelResponseDto> =
-        hotelService.getHotelsByLocation(location)
+    fun hotelExists(@Argument id: String): Boolean = hotelService.hotelExists(id)
 
-    @QueryMapping
-    fun hotelsByLocationName(
-        @Argument location: String,
-        @Argument checkIn: String,
-        @Argument checkOut: String,
-        @Argument adults: Int
-    ): String = hotelService.hotelsByLocationName(location, checkIn, checkOut, adults)
+    @MutationMapping(name = "createHotel")
+    fun saveHotel(@Argument @Valid hotelCreateDto: HotelCreateDto): HotelResponseDto =
+        hotelService.saveHotel(hotelCreateDto)
 
-    @MutationMapping
-    fun createHotel(@Argument @Valid hotelCreateDto: HotelCreateDto): HotelResponseDto =
-        hotelService.createHotel(hotelCreateDto)
+
 }

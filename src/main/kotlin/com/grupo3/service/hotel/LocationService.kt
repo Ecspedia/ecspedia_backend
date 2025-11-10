@@ -10,17 +10,30 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class LocationService(private val locationRepository: LocationRepository) {
 
+
+
     fun getAllLocations(): List<LocationResponseDto> {
         return locationRepository.findAll()
-            .sortedBy { it.city.lowercase() }
+
             .map { LocationMapper.toResponseDto(it) }
     }
-
-    fun getLocationByCode(code: String): LocationResponseDto {
-        val location = locationRepository.findByCode(code.trim().uppercase())
+    fun getTopLocations(): List<LocationResponseDto> {
+        val popularDestinations = locationRepository.findTopPopularDestinations()
+        return popularDestinations.map { LocationMapper.toResponseDto(it) }
+    }
+    fun getLocation(code: String, city: String): LocationResponseDto {
+        val location = locationRepository.findLocation(code.trim().uppercase(),city.trim().lowercase())
             .orElseThrow { IllegalArgumentException("Location not found with code: $code") }
         return LocationMapper.toResponseDto(location)
     }
+
+    fun getLocationByCity(city: String): LocationResponseDto {
+        val location = locationRepository.findByCity(city.trim().lowercase()).
+        orElseThrow { IllegalArgumentException("Location not found : $city") }
+
+        return LocationMapper.toResponseDto(location)
+    }
+
 
     @Transactional
     fun createLocation(locationCreateDto: LocationCreateDto): LocationResponseDto {
@@ -33,4 +46,6 @@ class LocationService(private val locationRepository: LocationRepository) {
         val saved = locationRepository.save(location)
         return LocationMapper.toResponseDto(saved)
     }
+
+
 }
