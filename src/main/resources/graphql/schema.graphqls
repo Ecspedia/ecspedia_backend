@@ -2,6 +2,7 @@ type Query {
     #User Queries
     getUserById(id: ID!): User
     getAllUsers: [User!]!
+    me: User
 
     #Hotel Queries
     hotels: [Hotel!]!
@@ -19,6 +20,10 @@ type Query {
 
 type Mutation {
     registerUser(userRegistrationDto: UserRegistrationInput!): User!
+    login(authRequest: AuthInput!): AuthResponse!
+    forgotPassword(email: String!): PasswordResetResponse!
+    resetPassword(email: String!, token: String!, newPassword: String!): PasswordResetResponse!
+    logout: Boolean!
     createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
     createLocation(locationCreateDto: LocationCreateInput!): Location!
 }
@@ -36,9 +41,23 @@ input UserRegistrationInput {
     password: String!
 }
 
+input AuthInput {
+    username: String!  # Can be either username or email
+    password: String!
+}
+
+type AuthResponse {
+    token: String!
+}
+
 type UserRegistrationResponse {
     message: String!
     user: User
+}
+
+type PasswordResetResponse {
+    success: Boolean!
+    message: String!
 }
 
 

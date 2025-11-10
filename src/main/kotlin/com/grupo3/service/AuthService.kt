@@ -17,7 +17,9 @@ class AuthService(
 ) {
     @Transactional(readOnly = true)
     fun authenticate(authRequest: AuthRequestDto): AuthResponseDto {
+        // Try to find user by username first, then by email
         val user = userRepository.findByUsername(authRequest.username)
+            ?: userRepository.findByEmail(authRequest.username)
             ?: throw RuntimeException("User not found")
 
         if (!passwordEncoder.matches(authRequest.password, user.password)) {
