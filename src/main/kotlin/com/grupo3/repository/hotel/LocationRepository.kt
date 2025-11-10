@@ -20,4 +20,15 @@ interface LocationRepository : JpaRepository<Location, String> {
     )
     fun findByPopularDestinations(): List<Location>
 
+    @Query(
+        """
+             SELECT l
+             FROM Location l
+             WHERE l.city = :city
+             AND l.code = :code
+        """
+    )
+    fun findLocation(code: String, city: String): Optional<Location>
+
+
 }

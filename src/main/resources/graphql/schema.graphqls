@@ -6,21 +6,22 @@ type Query {
     getAllUsers: [User!]!
 
     #Hotel Queries
-    searchHotelsByLocation(location: String!, checkIn: String!, checkOut: String!, adults: Int!): HotelbedsSearchCache!
-    cachedHotelQueries: [HotelbedsSearchCache!]!
+    searchHotelsByLocation(location: String!): [Hotel!]!
+    topPopularHotels: [Hotel!]!
+
 
     #Location Queries
     locations: [Location!]!
-    locationByCode(code: String!): Location
     topDestinations: [Location!]!
 
 }
 
 type Mutation {
     registerUser(userRegistrationDto: UserRegistrationInput!): User!
-    createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
+
     createLocation(locationCreateDto: LocationCreateInput!): Location!
-    updateImage(imageId: ID!, imageUrl: String!): ImageUpdateResponse!
+    saveHotel(hotelCreateDto: HotelCreateInput!): Hotel!
+
 }
 
 
@@ -54,6 +55,32 @@ type Hotel{
     pricePerNight:Float!
     latitude:Float
     longitude:Float
+    hotelDescription:String
+    hotelTypeId:Int
+    chain:String
+    currency:String
+    country:String
+    city:String
+    address:String
+    zip:String
+    mainPhoto:String
+    thumbnail:String
+    stars:Int
+    facilityIds:[Int!]
+    accessibilityAttributes:HotelAccessibilityAttributes
+    deletedAt:String
+}
+
+type HotelAccessibilityAttributes {
+    attributes: [String!]
+    showerChair: Boolean
+    entranceType: String
+    petFriendly: String
+    rampAngle: Int
+    rampLength: Int
+    entranceDoorWidth: Int
+    roomMaxGuestsNumber: Int
+    distanceFromTheElevatorToTheAccessibleRoom: Int
 }
 
 input HotelCreateInput {
@@ -66,83 +93,32 @@ input HotelCreateInput {
     pricePerNight: Float!
     latitude: Float
     longitude: Float
-}
-
-type HotelbedsSearchCache {
-    id: ID!
-    checkIn: String!
-    checkOut: String!
-    adults: Int!
-    location: String!
-    responsePayload: HotelbedsHotelCollection
-    fetchedAt: String!
-    expiresAt: String!
-    success: Boolean!
-    auditData: HotelbedsAuditData
-}
-
-type HotelbedsHotelCollection {
-    total: Int
-    hotels: [HotelbedsHotel!]
-    checkIn: String
-    checkOut: String
+    hotelDescription: String
+    hotelTypeId: Int
+    chain: String
     currency: String
+    country: String
+    city: String
+    address: String
+    zip: String
+    mainPhoto: String
+    thumbnail: String
+    stars: Int
+    facilityIds: [Int!]
+    accessibilityAttributes: HotelAccessibilityAttributesInput
+    deletedAt: String
 }
 
-type HotelbedsHotel {
-    code: ID
-    name: String
-    destinationCode: String
-    destinationName: String
-    categoryCode: String
-    categoryName: String
-    latitude: String
-    longitude: String
-    minRate: String
-    maxRate: String
-    rooms: [HotelbedsRoom!]
-}
-
-type HotelbedsRoom {
-    code: String
-    name: String
-    rates: [HotelbedsRate!]
-}
-
-type HotelbedsRate {
-    rateKey: String
-    rateType: String
-    rateClass: String
-    net: String
-    currency: String
-    rooms: Int
-    adults: Int
-    children: Int
-    boardCode: String
-    boardName: String
-    paymentType: String
-    packaging: Boolean
-    allotment: Int
-    cancellationPolicies: [HotelbedsCancellationPolicy!]
-    offers: [HotelbedsOffer!]
-}
-
-type HotelbedsCancellationPolicy {
-    from: String
-    amount: String
-}
-
-type HotelbedsOffer {
-    code: String
-    name: String
-    amount: String
-}
-
-type HotelbedsAuditData {
-    token: String
-    processTime: String
-    timestamp: String
-    environment: String
+input HotelAccessibilityAttributesInput {
+    attributes: [String!]
+    showerChair: Boolean
+    entranceType: String
+    petFriendly: String
+    rampAngle: Int
+    rampLength: Int
+    entranceDoorWidth: Int
+    roomMaxGuestsNumber: Int
+    distanceFromTheElevatorToTheAccessibleRoom: Int
 }
 
 type Location {

@@ -19,10 +19,7 @@ class LocationController(private val locationService: LocationService) {
         return locationService.getAllLocations()
     }
 
-    @QueryMapping
-    fun locationByCode(@Argument code: String): LocationResponseDto {
-        return locationService.getLocationByCode(code)
-    }
+
 
     @MutationMapping
     fun createLocation(@Argument @Valid locationCreateDto: LocationCreateDto): LocationResponseDto {
