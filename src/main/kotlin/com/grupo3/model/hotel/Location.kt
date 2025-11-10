@@ -14,7 +14,7 @@ data class Location(
     @GeneratedValue(strategy = GenerationType.UUID)
     var id: String? = null,
 
-    @Column(nullable = false, length = 2)
+    @Column(nullable = false, length = 10)
     var code: String = "",
 
     @Column(nullable = false)
@@ -29,5 +29,6 @@ data class Location(
 
     var longitude: Double? = null,
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
     var isPopular: Boolean = false
 )
