@@ -27,12 +27,17 @@ class JwtRequestFilter(
         chain: FilterChain
     ) {
         val header = request.getHeader(HttpHeaders.AUTHORIZATION)
-        if (header == null || !header.startsWith("Bearer ")) {
+        val token = when {
+            header != null && header.startsWith("Bearer ") -> header.substring(7)
+            request.cookies != null -> request.cookies.firstOrNull { it.name == "auth_token" }?.value
+            else -> null
+        }
+
+        if (token.isNullOrBlank()) {
             chain.doFilter(request, response)
             return
         }
 
-        val token = header.substring(7)
         val jwt = jwtTokenService.validateToken(token)
 
         if (jwt == null || jwt.subject == null) {

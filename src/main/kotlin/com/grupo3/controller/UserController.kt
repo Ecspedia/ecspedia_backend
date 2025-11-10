@@ -8,10 +8,17 @@ import com.grupo3.model.User
 import com.grupo3.service.AuthService
 import com.grupo3.service.UserService
 import graphql.GraphQLException
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.ContextValue
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
+import org.springframework.http.HttpHeaders
+import org.springframework.http.ResponseCookie
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
+import java.time.Duration
 
 @Controller
 class UserController(
@@ -32,10 +39,24 @@ class UserController(
 
     @MutationMapping
     fun login(
-        @Argument authRequest: AuthRequestDto
+        @Argument authRequest: AuthRequestDto,
+        @ContextValue("response") response: HttpServletResponse,
+        @ContextValue("request") request: HttpServletRequest,
     ): AuthResponseDto {
         return try {
-            authService.authenticate(authRequest)
+            val authResponse = authService.authenticate(authRequest)
+
+            val cookie = ResponseCookie.from("auth_token", authResponse.token)
+                .httpOnly(true)
+                .secure(request.isSecure)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.ofDays(7))
+                .build()
+
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString())
+
+            authResponse
         } catch (ex: RuntimeException) {
             throw GraphQLException(ex.message ?: "Authentication failed")
         }
@@ -50,6 +71,12 @@ class UserController(
     @QueryMapping
     fun getAllUsers(): List<User> {
         return userService.findAllUsers()
+    }
+
+    @QueryMapping
+    fun me(@ContextValue("authentication") authentication: Authentication?): User? {
+        val username = authentication?.name ?: return null
+        return userService.findUserByUsername(username)
     }
     
     @MutationMapping
@@ -80,5 +107,23 @@ class UserController(
         } catch (ex: RuntimeException) {
             throw GraphQLException(ex.message ?: "Failed to reset password")
         }
+    }
+
+    @MutationMapping
+    fun logout(
+        @ContextValue("response") response: HttpServletResponse,
+        @ContextValue("request") request: HttpServletRequest,
+    ): Boolean {
+        val cookie = ResponseCookie.from("auth_token", "")
+            .httpOnly(true)
+            .secure(request.isSecure)
+            .sameSite("Lax")
+            .path("/")
+            .maxAge(Duration.ZERO)
+            .build()
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString())
+
+        return true
     }
 }

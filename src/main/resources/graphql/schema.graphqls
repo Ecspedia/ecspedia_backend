@@ -2,6 +2,7 @@ type Query {
     #User Queries
     getUserById(id: ID!): User
     getAllUsers: [User!]!
+    me: User
 
     #Hotel Queries
     hotels: [Hotel!]!
@@ -22,6 +23,7 @@ type Mutation {
     login(authRequest: AuthInput!): AuthResponse!
     forgotPassword(email: String!): PasswordResetResponse!
     resetPassword(email: String!, token: String!, newPassword: String!): PasswordResetResponse!
+    logout: Boolean!
     createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
     createLocation(locationCreateDto: LocationCreateInput!): Location!
 }
