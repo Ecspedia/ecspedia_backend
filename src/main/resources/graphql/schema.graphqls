@@ -23,8 +23,6 @@ type Query {
     topLocations: [Location!]!
     locationByCode(code: String!): Location
 
-    #Hotelbeds Test Query
-    hotelbedsSampleSearch: String!
 }
 
 type Mutation {
@@ -40,6 +38,10 @@ type Mutation {
     createBooking(
         hotelId: ID!
         userId: ID!
+        firstNameGuest: String!
+        lastNameGuest: String!
+        emailGuest: String!
+        phoneNumberGuest: String
         startTime: String!
         endTime: String!
         price: Float
@@ -190,6 +192,10 @@ type Booking {
     id: ID!
     hotelId: ID!
     userId: ID!
+    firstNameGuest: String!
+    lastNameGuest: String!
+    emailGuest: String!
+    phoneNumberGuest: String
     startTime: String!
     endTime: String!
     status: BookingStatus!

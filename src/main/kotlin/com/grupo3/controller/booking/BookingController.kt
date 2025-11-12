@@ -25,12 +25,27 @@ class BookingController(
     fun createBooking(
         @Argument @NotBlank hotelId: String,
         @Argument @Positive userId: Long,
+        @Argument @NotBlank firstNameGuest: String,
+        @Argument @NotBlank lastNameGuest: String,
+        @Argument @Email emailGuest: String,
+        @Argument phoneNumberGuest: String?,
         @Argument @NotBlank startTime: String,
         @Argument @NotBlank endTime: String,
         @Argument @PositiveOrZero price: Long?,
         @Argument currency: String?
     ): BookingResponseDto =
-        bookingService.createBooking(hotelId, userId, startTime, endTime, price, currency)
+        bookingService.createBooking(
+            hotelId = hotelId,
+            userId = userId,
+            firstNameGuest = firstNameGuest,
+            lastNameGuest = lastNameGuest,
+            emailGuest = emailGuest,
+            phoneNumberGuest = phoneNumberGuest,
+            startTimeIso = startTime,
+            endTimeIso = endTime,
+            price = price,
+            currency = currency
+        )
 
     @QueryMapping
     fun bookings(): List<BookingResponseDto> =

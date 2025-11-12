@@ -39,6 +39,18 @@ data class Booking(
     @JoinColumn(name = "user_id", nullable = false)
     var user: User,
 
+    @Column(nullable = false, length = 80)
+    var firstNameGuest: String,
+
+    @Column(nullable = false, length = 80)
+    var lastNameGuest: String,
+
+    @Column(nullable = false, length = 255)
+    var emailGuest: String,
+
+    @Column(length = 25)
+    var phoneNumberGuest: String? = null,
+
     @Column(nullable = false)
     var startTime: Instant,
 

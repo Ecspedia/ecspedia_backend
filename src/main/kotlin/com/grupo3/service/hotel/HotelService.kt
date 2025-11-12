@@ -48,5 +48,10 @@ class HotelService(
     fun getAllHotels(): List<HotelResponseDto> =
         hotelRepository.findAll().map { HotelMapper.toResponseDto(it) }
 
+    fun getHotelById(id: String): HotelResponseDto? =
+        hotelRepository.findById(id)
+            .map { HotelMapper.toResponseDto(it) }
+            .orElse(null)
+
     fun hotelExists(id: String): Boolean = hotelRepository.existsById(id)
 }

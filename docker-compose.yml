@@ -27,11 +27,15 @@ services:
     container_name: ecspedia-app
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecspedia
       SPRING_DATASOURCE_USERNAME: ecspedia
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      LITEAPI_API_BASEURL: ${LITEAPI_API_BASEURL}
+      LITEAPI_API_KEY: ${LITEAPI_API_KEY}
     depends_on:
       db:
         condition: service_healthy

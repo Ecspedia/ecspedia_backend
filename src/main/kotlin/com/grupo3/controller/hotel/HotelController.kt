@@ -28,6 +28,9 @@ class HotelController(private val hotelService: HotelService) {
     fun getAllHotels(): List<HotelResponseDto> = hotelService.getAllHotels()
 
     @QueryMapping
+    fun hotelById(@Argument id: String): HotelResponseDto? = hotelService.getHotelById(id)
+
+    @QueryMapping
     fun hotelExists(@Argument id: String): Boolean = hotelService.hotelExists(id)
 
     @MutationMapping(name = "createHotel")
