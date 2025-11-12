@@ -21,6 +21,10 @@ class BookingService(
     fun createBooking(
         hotelId: String,
         userId: Long,
+        firstNameGuest: String,
+        lastNameGuest: String,
+        emailGuest: String,
+        phoneNumberGuest: String?,
         startTimeIso: String,
         endTimeIso: String,
         price: Long?,
@@ -40,6 +44,10 @@ class BookingService(
         val booking = Booking(
             hotel = hotel,
             user = user,
+            firstNameGuest = firstNameGuest,
+            lastNameGuest = lastNameGuest,
+            emailGuest = emailGuest,
+            phoneNumberGuest = phoneNumberGuest,
             startTime = startTime,
             endTime = endTime,
             price = price,
@@ -53,7 +61,7 @@ class BookingService(
     fun getAllBooking(): List<BookingResponseDto> =
         bookingRepository.findAll().map { BookingMapper.toResponseDto(it) }
 
-    fun getBookingByUserEmail(userEmail: String):List<BookingResponseDto>{
-        return bookingRepository.findAllByUserEmail(userEmail).map{ BookingMapper.toResponseDto(it) }
-    }
+    fun getBookingByUserEmail(userEmail: String): List<BookingResponseDto> =
+        bookingRepository.findAllByUserEmailOrderByCreatedAtDesc(userEmail)
+            .map { BookingMapper.toResponseDto(it) }
 }

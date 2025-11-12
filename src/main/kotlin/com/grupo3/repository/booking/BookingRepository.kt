@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface BookingRepository : JpaRepository<Booking, String>{
-
-
-    fun  findAllByUserEmail(email:String):List<Booking>
+interface BookingRepository : JpaRepository<Booking, String> {
+    fun findAllByUserEmailOrderByCreatedAtDesc(email: String): List<Booking>
 }
