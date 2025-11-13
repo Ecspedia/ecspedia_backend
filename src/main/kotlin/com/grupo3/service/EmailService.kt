@@ -1,5 +1,6 @@
 package com.grupo3.service
 
+import com.grupo3.dto.BookingEmailTemplate
 import com.grupo3.dto.EmailTemplate
 import com.grupo3.dto.PasswordResetEmailTemplate
 import com.grupo3.dto.WelcomeEmailTemplate
@@ -11,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Service
 class EmailService(
@@ -45,8 +48,9 @@ class EmailService(
      */
     fun sendPasswordResetEmail(username: String, email: String, resetToken: String, baseUrl: String): Boolean {
         return try {
-            val resetUrl = "$baseUrl/reset-password?token=$resetToken"
-            val template = PasswordResetEmailTemplate(username, resetToken, resetUrl).toEmailTemplate()
+            val encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8)
+            val resetUrl = "$baseUrl/reset-password?token=$resetToken&email=$encodedEmail"
+            val template = PasswordResetEmailTemplate(username, email, resetToken, resetUrl).toEmailTemplate()
             sendEmail(email, template)
             logger.info("Password reset email sent successfully to: $email")
             true
@@ -81,6 +85,39 @@ class EmailService(
             true
         } catch (e: Exception) {
             logger.error("Failed to send simple email to: $to", e)
+            false
+        }
+    }
+
+    /**
+     * Sends a booking confirmation email
+     */
+    fun sendBookingConfirmationEmail(
+        username: String,
+        email: String,
+        hotelName: String,
+        guestName: String,
+        checkInDate: String,
+        checkOutDate: String,
+        bookingId: String,
+        priceSummary: String?
+    ): Boolean {
+        return try {
+            val template = BookingEmailTemplate(
+                username = username,
+                hotelName = hotelName,
+                checkInDate = checkInDate,
+                checkOutDate = checkOutDate,
+                bookingId = bookingId,
+                guestName = guestName,
+                priceSummary = priceSummary
+            ).toEmailTemplate()
+
+            sendEmail(email, template)
+            logger.info("Booking confirmation email sent successfully to: $email")
+            true
+        } catch (e: Exception) {
+            logger.error("Failed to send booking confirmation email to: $email", e)
             false
         }
     }

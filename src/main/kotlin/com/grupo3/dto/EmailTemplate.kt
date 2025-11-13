@@ -110,7 +110,7 @@ data class WelcomeEmailTemplate(
                     
                     <div class="footer">
                         <p>This is an automated message. Please do not reply to this email.</p>
-                        <p>© 2024 Ecspedia. All rights reserved.</p>
+                        <p>© 2025 Ecspedia. All rights reserved.</p>
                     </div>
                 </div>
             </body>
@@ -136,7 +136,7 @@ data class WelcomeEmailTemplate(
             Ready to start exploring? Visit our platform and discover your next perfect stay!
             
             This is an automated message. Please do not reply to this email.
-            © 2024 Ecspedia. All rights reserved.
+            © 2025 Ecspedia. All rights reserved.
         """.trimIndent()
         
         return EmailTemplate(subject, htmlContent, textContent)
@@ -145,6 +145,7 @@ data class WelcomeEmailTemplate(
 
 data class PasswordResetEmailTemplate(
     val username: String,
+    val email: String,
     val resetToken: String,
     val resetUrl: String
 ) {
@@ -227,7 +228,7 @@ data class PasswordResetEmailTemplate(
                     <div class="content">
                         <p>Hello <strong>$username</strong>,</p>
                         
-                        <p>We received a request to reset your password for your Ecspedia account.</p>
+                        <p>We received a request to reset your password for your Ecspedia account associated with <strong>$email</strong>.</p>
                         
                         <div class="warning">
                             <p><strong>Important:</strong> This link will expire in 24 hours for security reasons.</p>
@@ -247,7 +248,7 @@ data class PasswordResetEmailTemplate(
                     
                     <div class="footer">
                         <p>This is an automated message. Please do not reply to this email.</p>
-                        <p>© 2024 Ecspedia. All rights reserved.</p>
+                        <p>© 2025 Ecspedia. All rights reserved.</p>
                     </div>
                 </div>
             </body>
@@ -259,7 +260,7 @@ data class PasswordResetEmailTemplate(
             
             Hello $username,
             
-            We received a request to reset your password for your Ecspedia account.
+            We received a request to reset your password for your Ecspedia account linked to $email.
             
             Important: This link will expire in 24 hours for security reasons.
             
@@ -269,9 +270,155 @@ data class PasswordResetEmailTemplate(
             If you didn't request this password reset, please ignore this email. Your password will remain unchanged.
             
             This is an automated message. Please do not reply to this email.
-            © 2024 Ecspedia. All rights reserved.
+            © 2025 Ecspedia. All rights reserved.
         """.trimIndent()
         
+        return EmailTemplate(subject, htmlContent, textContent)
+    }
+}
+
+data class BookingEmailTemplate(
+    val username: String,
+    val hotelName: String,
+    val checkInDate: String,
+    val checkOutDate: String,
+    val bookingId: String,
+    val guestName: String,
+    val priceSummary: String?
+) {
+    fun toEmailTemplate(): EmailTemplate {
+        val subject = "Booking Confirmation - Ecspedia"
+
+        val priceHtml = priceSummary?.let {
+            """
+                <div class="highlight">
+                    <p><strong>Total:</strong> $it</p>
+                </div>
+            """.trimIndent()
+        } ?: ""
+
+        val priceText = priceSummary?.let { "\nTotal: $it\n" } ?: ""
+
+        val htmlContent = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Booking Confirmation - Ecspedia</title>
+                <style>
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background-color: #f4f4f4;
+                    }
+                    .container {
+                        background-color: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 30px;
+                    }
+                    .logo {
+                        font-size: 28px;
+                        font-weight: bold;
+                        color: #2c3e50;
+                        margin-bottom: 10px;
+                    }
+                    .title {
+                        color: #2c3e50;
+                        font-size: 24px;
+                        margin-bottom: 20px;
+                    }
+                    .content {
+                        margin-bottom: 30px;
+                    }
+                    .details {
+                        background-color: #f8fbff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        border: 1px solid #dfe9f5;
+                    }
+                    .details p {
+                        margin: 8px 0;
+                    }
+                    .highlight {
+                        background-color: #e8f5e8;
+                        padding: 15px;
+                        border-left: 4px solid #27ae60;
+                        margin: 20px 0;
+                    }
+                    .footer {
+                        text-align: center;
+                        margin-top: 30px;
+                        padding-top: 20px;
+                        border-top: 1px solid #eee;
+                        color: #666;
+                        font-size: 14px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <div class="logo">🏨 Ecspedia</div>
+                        <h1 class="title">Booking confirmed!</h1>
+                    </div>
+                    
+                    <div class="content">
+                        <p>Hello <strong>$username</strong>,</p>
+                        <p>Thank you for booking with Ecspedia. Your stay is confirmed and we cannot wait to host you.</p>
+                        
+                        <div class="details">
+                            <p><strong>Hotel:</strong> $hotelName</p>
+                            <p><strong>Guest:</strong> $guestName</p>
+                            <p><strong>Booking ID:</strong> $bookingId</p>
+                            <p><strong>Check in:</strong> $checkInDate</p>
+                            <p><strong>Check out:</strong> $checkOutDate</p>
+                        </div>
+                        
+                        $priceHtml
+                        
+                        <p>If you need to make any changes or have questions, just reply to this email and our team will help you out.</p>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Safe travels,</p>
+                        <p>The Ecspedia team</p>
+                        <p>This is an automated message. Please do not reply to this email.</p>
+                        <p>© 2025 Ecspedia. All rights reserved.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        """.trimIndent()
+
+        val textContent = """
+            Booking confirmed!
+            
+            Hello $username,
+            Thank you for booking with Ecspedia. Your stay is confirmed.
+            
+            Hotel: $hotelName
+            Guest: $guestName
+            Booking ID: $bookingId
+            Check in: $checkInDate
+            Check out: $checkOutDate
+            $priceText
+            If you need assistance with your booking, just reply to this email and our team will help you.
+            
+            Safe travels,
+            The Ecspedia team
+            © 2025 Ecspedia. All rights reserved.
+        """.trimIndent()
+
         return EmailTemplate(subject, htmlContent, textContent)
     }
 }
