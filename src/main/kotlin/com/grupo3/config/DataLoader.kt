@@ -65,7 +65,7 @@ class DataLoader(
 
     private fun seedDefaultUser() {
         val defaultUsername = "demo_user"
-        val defaultEmail = "demo@ecspedia.com"
+        val defaultEmail = "sebastian.calderon@sansano.usm.cl"
         val defaultPassword = "password123"
 
         if (userRepository.existsByEmail(defaultEmail)) {
