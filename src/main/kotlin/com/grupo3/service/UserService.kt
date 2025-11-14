@@ -15,7 +15,7 @@ class UserService(
     private val emailService: EmailService
 ) {
     
-    @Value("\${app.email.base-url}")
+    @Value("\${app.email.base-url:http://localhost:3000}")
     private lateinit var baseUrl: String
     @Transactional
     fun registerUser(userRegistrationDto: UserRegistrationDto): User {
