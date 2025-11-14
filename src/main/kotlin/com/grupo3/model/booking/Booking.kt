@@ -21,8 +21,8 @@ import java.time.Instant
     name = "bookings",
     uniqueConstraints = [
         UniqueConstraint(
-            name = "uk_bookings_hotel_slot",
-            columnNames = ["hotel_id", "start_time", "end_time"]
+            name = "uk_bookings_hotel_user_slot",
+            columnNames = ["hotel_id", "start_time", "end_time", "user_id"]
         )
     ]
 )

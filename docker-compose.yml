@@ -33,10 +33,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecspedia
       SPRING_DATASOURCE_USERNAME: ecspedia
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       LITEAPI_API_BASEURL: ${LITEAPI_API_BASEURL}
       LITEAPI_API_KEY: ${LITEAPI_API_KEY}
       BASE_URL: ${BASE_URL}
+      EMAIL_USERNAME: ${EMAIL_USERNAME}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
