@@ -35,7 +35,7 @@ class SecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
             val allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS")
-            ?: "https://ecspedia.shop,https://dev.ecspedia.shop,http://localhost:3000"
+            ?: "https://ecspedia.shop,https://dev.ecspedia.shop,http://localhost:3000,http://192.168.1.89:3000"
            val allowedOrigins = allowedOriginsEnv.split(",").map { it.trim() }
 
            val config = CorsConfiguration()

@@ -64,22 +64,34 @@ class DataLoader(
     }
 
     private fun seedDefaultUser() {
-        val defaultUsername = "demo_user"
-        val defaultEmail = "sebastian.calderon@sansano.usm.cl"
-        val defaultPassword = "password123"
+        val defaultUsers = listOf(
+            DefaultUserSeed(
+                username = "demo_user",
+                email = "sebastian.calderon@sansano.usm.cl",
+                password = "password123"
+            ),
+            DefaultUserSeed(
+                username = "test_user",
+                email = "test@gmail.com",
+                password = "password123"
+            )
+        )
 
-        if (userRepository.existsByEmail(defaultEmail)) {
+        val usersToCreate = defaultUsers.filterNot { userRepository.existsByEmail(it.email) }
+        if (usersToCreate.isEmpty()) {
             return
         }
 
-        val user = User(
-            username = defaultUsername,
-            email = defaultEmail,
-            password = passwordEncoder.encode(defaultPassword)
-        )
+        val users = usersToCreate.map { seed ->
+            User(
+                username = seed.username,
+                email = seed.email,
+                password = passwordEncoder.encode(seed.password)
+            )
+        }
 
-        userRepository.save(user)
-        println("Seeded default user with email $defaultEmail")
+        userRepository.saveAll(users)
+        println("Seeded default users with emails ${usersToCreate.joinToString { it.email }}")
     }
 
     private fun seedHotels() {
@@ -137,6 +149,12 @@ class DataLoader(
             println("Seeded ${newHotels.size} hotels")
         }
     }
+
+    private data class DefaultUserSeed(
+        val username: String,
+        val email: String,
+        val password: String
+    )
 
     private data class LocationSeedRecord(
         val code: String,

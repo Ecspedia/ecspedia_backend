@@ -9,6 +9,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import org.springframework.validation.annotation.Validated
+import java.util.concurrent.TimeUnit
 
 @Controller
 @Validated
@@ -16,6 +17,7 @@ class LocationController(private val locationService: LocationService) {
 
     @QueryMapping
     fun locations(): List<LocationResponseDto> {
+
         return locationService.getAllLocations()
     }
 
@@ -23,11 +25,14 @@ class LocationController(private val locationService: LocationService) {
 
     @MutationMapping
     fun createLocation(@Argument @Valid locationCreateDto: LocationCreateDto): LocationResponseDto {
+
         return locationService.createLocation(locationCreateDto)
     }
 
     @QueryMapping(name = "topLocations")
     fun topDestinations(): List< LocationResponseDto> {
+
+
         return locationService.getTopLocations()
     }
 
