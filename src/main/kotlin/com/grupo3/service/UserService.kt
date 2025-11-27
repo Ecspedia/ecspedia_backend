@@ -1,5 +1,6 @@
 package com.grupo3.service
 
+import com.grupo3.dto.user.UpdateUsernameDto
 import com.grupo3.dto.user.UserRegistrationDto
 import com.grupo3.model.User
 import com.grupo3.repository.UserRepository
@@ -88,5 +89,23 @@ class UserService(
             println("Failed to reset password for ${user.email}: ${e.message}")
             return false
         }
+    }
+
+    @Transactional
+    fun updateUsername(userId: Long, updateUsernameDto: UpdateUsernameDto): User {
+        val user = userRepository.findById(userId)
+            .orElseThrow { RuntimeException("User not found") }
+
+        // Check if the new username is different from current
+        if (user.username == updateUsernameDto.username) {
+            throw RuntimeException("New username must be different from current username")
+        }
+
+        // Check if username is already taken
+        if (userRepository.existsByUsername(updateUsernameDto.username)) {
+            throw RuntimeException("Username is already taken")
+        }
+
+        return userRepository.save(user.copy(username = updateUsernameDto.username))
     }
 }
