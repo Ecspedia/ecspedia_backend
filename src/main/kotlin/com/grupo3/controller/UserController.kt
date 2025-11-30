@@ -3,6 +3,7 @@ package com.grupo3.controller
 import com.grupo3.dto.auth.AuthRequestDto
 import com.grupo3.dto.auth.AuthResponseDto
 import com.grupo3.dto.auth.PasswordResetResponseDto
+import com.grupo3.dto.user.UpdateProfilePhotoDto
 import com.grupo3.dto.user.UpdateUsernameDto
 import com.grupo3.dto.user.UserRegistrationDto
 import com.grupo3.model.User
@@ -123,6 +124,28 @@ class UserController(
             userService.updateUsername(currentUser.id!!, updateUsernameDto)
         } catch (ex: RuntimeException) {
             throw GraphQLException(ex.message ?: "Failed to update username")
+        }
+    }
+
+    @MutationMapping
+    fun updateProfilePhoto(
+        @Argument updateProfilePhotoDto: UpdateProfilePhotoDto,
+        @ContextValue("authentication") authentication: Authentication?
+    ): User {
+        val username = authentication?.name ?: throw GraphQLException("User not authenticated")
+        val currentUser = userService.findUserByUsername(username)
+            ?: throw GraphQLException("User not found")
+        
+        return try {
+            // Decode base64 and upload to S3
+            val imageUrl = userService.updateProfilePhotoFromBase64(
+                currentUser.id!!, 
+                updateProfilePhotoDto.imageBase64
+            )
+            // Update user with new photo URL
+            userService.updateProfilePhoto(currentUser.id!!, imageUrl)
+        } catch (ex: RuntimeException) {
+            throw GraphQLException(ex.message ?: "Failed to update profile photo")
         }
     }
 
