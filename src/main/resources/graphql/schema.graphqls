@@ -5,6 +5,8 @@ type Query {
     getUserById(id: ID!): User
     getAllUsers: [User!]!
     me:User
+    #Chat1
+    sendMessage(message:String!):String!
 
     #Hotel Queries
     hotelsByLocation(location: String!): [Hotel!]!
