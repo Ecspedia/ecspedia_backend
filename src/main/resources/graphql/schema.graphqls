@@ -6,7 +6,7 @@ type Query {
     getAllUsers: [User!]!
     me:User
     #Chat1
-    sendMessage(message:String!):String!
+    sendMessage(message:String!):chatResponseDto!
 
     #Hotel Queries
     hotelsByLocation(location: String!): [Hotel!]!
@@ -15,6 +15,10 @@ type Query {
     hotelById(id: ID!): Hotel
     hotelsByLocationName(location: String!, checkIn: String!, checkOut: String!, adults: Int!): String!
     hotelExists(id: ID!): Boolean!
+
+
+
+    askHotelQuestion(searchQuery:String!,hotelId:String!):[Hotel!]!
 
     #Booking Queries
     bookings: [Booking!]!
@@ -25,7 +29,11 @@ type Query {
     topLocations: [Location!]!
     locationByCode(code: String!): Location
 
+
+
 }
+
+
 
 type Mutation {
     registerUser(userRegistrationDto: UserRegistrationInput!): User!
@@ -84,6 +92,17 @@ type PasswordResetResponse {
     message: String!
 }
 
+
+
+enum ChatResponseType {
+    NORMAL
+    HOTELS
+}
+
+type chatResponseDto{
+    response:String!
+    typeOf: ChatResponseType!
+}
 
 
 type Hotel{

@@ -15,6 +15,8 @@ class CacheConfig {
                     .maximumSize(5_000)
                     .expireAfterWrite(Duration.ofMinutes(10))
             )
-            setCacheNames(listOf("hotelsByLocation"))
+            setCacheNames(listOf("hotelsByLocation","sendMessage"))
+
+
         }
 }

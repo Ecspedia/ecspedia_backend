@@ -1,5 +1,6 @@
 package com.grupo3.config
 
+import ai.koog.agents.core.tools.ToolRegistry
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.grupo3.model.User
@@ -9,6 +10,7 @@ import com.grupo3.model.hotel.Location
 import com.grupo3.repository.UserRepository
 import com.grupo3.repository.hotel.LocationRepository
 import com.grupo3.repository.hotel.HotelRepository
+import com.grupo3.util.GetAllHotels
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.io.ResourceLoader
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -31,6 +33,8 @@ class DataLoader(
         seedLocations()
         seedHotels()
         seedDefaultUser()
+
+
     }
 
     private fun seedLocations() {
