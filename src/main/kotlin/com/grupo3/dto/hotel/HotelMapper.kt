@@ -3,6 +3,7 @@ package com.grupo3.dto.hotel
 import com.grupo3.model.hotel.Hotel
 import com.grupo3.model.hotel.HotelAccessibilityAttributes
 import java.util.UUID
+import kotlin.String
 
 object HotelMapper {
 
@@ -31,6 +32,23 @@ object HotelMapper {
         facilityIds = dto.facilityIds,
         accessibilityAttributes = dto.accessibilityAttributes.toEntity(),
         deletedAt = dto.deletedAt
+    )
+
+
+    fun toPartialResponseDto(hotel: Hotel) = HotelPartialResponseDto(
+        id = hotel.id,
+        name= hotel.name!!,
+        image=hotel.image,
+        rating=hotel.rating,
+        reviewCount=hotel.reviewCount,
+        pricePerNight = hotel.pricePerNight!!,
+        location = hotel.location!!,
+        latitude = hotel.latitude,
+        longitude = hotel.longitude,
+        country = hotel.country,
+        city = hotel.city,
+        address = hotel.address,
+        stars = hotel.stars
     )
 
     fun toResponseDto(hotel: Hotel) = HotelResponseDto(

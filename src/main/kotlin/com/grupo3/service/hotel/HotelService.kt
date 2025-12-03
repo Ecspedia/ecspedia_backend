@@ -4,8 +4,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.grupo3.dto.hotel.HotelCreateDto
 import com.grupo3.dto.hotel.HotelMapper
+import com.grupo3.dto.hotel.HotelPartialResponseDto
 import com.grupo3.dto.hotel.HotelResponseDto
 import com.grupo3.dto.location.LocationMapper
+import com.grupo3.model.hotel.Hotel
 import com.grupo3.repository.hotel.HotelRepository
 import com.grupo3.service.hotel.dto.LiteApiSearchResponse
 import com.grupo3.service.hotel.dto.toResponseDto
@@ -34,6 +36,15 @@ class HotelService(
         return response.data.map { it.toResponseDto() }
     }
 
+    fun searchHotelsByNaturalLanguage(naturalLanguage: String): String{
+        val response = hotelClient.searchHotelByNaturalLanguage(naturalLanguage)
+        return response
+    }
+
+    fun askHotelQuestion(query: String,hotelId: String): String {
+        return hotelClient.askHotelQuestion(query, hotelId  )
+    }
+
     @Transactional
     fun saveHotel(hotelCreateDto: HotelCreateDto): HotelResponseDto {
         val hotel = HotelMapper.toEntity(hotelCreateDto)
@@ -47,6 +58,10 @@ class HotelService(
 
     fun getAllHotels(): List<HotelResponseDto> =
         hotelRepository.findAll().map { HotelMapper.toResponseDto(it) }
+
+        fun getAllPartialHotels(): List<HotelPartialResponseDto> =
+            hotelRepository.findAll().map { HotelMapper.toPartialResponseDto(it) }
+
 
     fun getHotelById(id: String): HotelResponseDto? =
         hotelRepository.findById(id)

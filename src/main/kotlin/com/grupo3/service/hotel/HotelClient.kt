@@ -1,5 +1,6 @@
 package com.grupo3.service.hotel
 
+import com.grupo3.model.hotel.Hotel
 import com.grupo3.model.hotel.Location
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
@@ -41,5 +42,52 @@ class HotelClient(
         }
     }
 
+    fun searchHotelByNaturalLanguage(naturalLanguage: String): String {
+        val uri = UriComponentsBuilder
+            .fromPath("/data/hotels")
+            .queryParam("aiSearch", naturalLanguage)
+            .queryParam("limit",10)
+            .build()
+            .toUriString()
+
+        return try {
+            val response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                String::class.java
+            )
+            response.body.orEmpty()
+        } catch (ex: RestClientResponseException) {
+            throw IllegalStateException(
+                "LiteAPI error: ${ex.statusCode.value()} ${ex.responseBodyAsString}",
+                ex
+            )
+        }
+    }
+
+    fun askHotelQuestion(query: String,hotelId: String): String {
+        val uri = UriComponentsBuilder
+            .fromPath("/data/hotel/ask")
+            .queryParam("hotelId", hotelId)
+            .queryParam("query", query)
+            .queryParam("allowWebSearch","true")
+            .build()
+            .toUriString()
+        return try {
+            val response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                String::class.java
+            )
+            response.body.orEmpty()
+        } catch (ex: RestClientResponseException) {
+            throw IllegalStateException(
+                "LiteAPI error: ${ex.statusCode.value()} ${ex.responseBodyAsString}",
+                ex
+            )
+        }
+    }
 
 }
