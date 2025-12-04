@@ -10,25 +10,8 @@ interface LocationRepository : JpaRepository<Location, String> {
     fun existsByCode(code: String): Boolean
     fun findByCity(city: String): Optional<Location>
 
-    @Query(
-      """
-            SELECT l
-            FROM Location l
-            WHERE l.isPopular = true
-            ORDER BY l.city ASC
-        """
-    )
-    fun findTopPopularDestinations(): List<Location>
-
-    @Query(
-        """
-             SELECT l
-             FROM Location l
-             WHERE l.city = :city
-             AND l.code = :code
-        """
-    )
-    fun findLocation(code: String, city: String): Optional<Location>
+    fun findByIsPopularTrueOrderByCityAsc(): List<Location>
+    fun findByCityAndCountry(city: String, country: String): Location
 
 
 }

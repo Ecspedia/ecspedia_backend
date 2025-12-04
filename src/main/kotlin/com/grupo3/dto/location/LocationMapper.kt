@@ -5,7 +5,7 @@ import com.grupo3.model.hotel.Location
 object LocationMapper {
 
     fun toEntity(dto: LocationCreateDto) = Location(
-        code = dto.code.trim().uppercase(),
+        code = dto.code.normalize(),
         city = dto.city.trim(),
         country = dto.country.trim(),
         state = dto.state?.trim(),
@@ -16,13 +16,8 @@ object LocationMapper {
     fun toResponseDto(entity: Location) = LocationResponseDto(
         id = entity.id!!,
         code = entity.code,
-        city =   entity.city
-            .lowercase() // normalize first
-            .split(" ")
-            .joinToString(" ") { word ->
-                word.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-            },
-        country = entity.country,
+        city = entity.city.toTitleCase(),
+        country = entity.country.toTitleCase(),
         state = entity.state,
         latitude = entity.latitude,
         longitude = entity.longitude,
@@ -31,7 +26,7 @@ object LocationMapper {
 
     fun toEntity(dto: LocationResponseDto) = Location(
         id = dto.id,
-        code = dto.code.trim().uppercase(),
+        code = dto.code.normalize(),
         city = dto.city.trim(),
         country = dto.country.trim(),
         state = dto.state?.trim(),
@@ -39,4 +34,14 @@ object LocationMapper {
         longitude = dto.longitude,
         isPopular = dto.isPopular
     )
+
+
+    private fun String.normalize(): String = this.trim().uppercase()
+
+    private fun String.toTitleCase(): String = this
+        .lowercase()
+        .split(" ")
+        .joinToString(" ") { word ->
+            word.replaceFirstChar { it.titlecaseChar() }
+        }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin
 
 @Controller
 @Validated
-@CrossOrigin(origins = ["*"])
 class HotelController(private val hotelService: HotelService) {
 
     @QueryMapping(name = "hotelsByLocation")

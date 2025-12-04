@@ -1,4 +1,4 @@
-package com.grupo3.controller
+package com.grupo3.controller.auth
 
 import com.grupo3.dto.auth.AuthRequestDto
 import com.grupo3.dto.auth.AuthResponseDto
@@ -80,7 +80,7 @@ class UserController(
         val username = authentication?.name ?: return null
         return userService.findUserByUsername(username)
     }
-    
+
     @MutationMapping
     fun forgotPassword(@Argument email: String): PasswordResetResponseDto {
         return try {
@@ -93,7 +93,7 @@ class UserController(
             throw GraphQLException(ex.message ?: "Failed to send password reset email")
         }
     }
-    
+
     @MutationMapping
     fun resetPassword(
         @Argument email: String,

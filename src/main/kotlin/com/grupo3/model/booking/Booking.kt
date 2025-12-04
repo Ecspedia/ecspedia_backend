@@ -29,6 +29,7 @@ import java.time.Instant
 data class Booking(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "VARCHAR(36)")
     var id: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

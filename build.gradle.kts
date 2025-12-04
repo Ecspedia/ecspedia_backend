@@ -6,6 +6,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     kotlin("plugin.jpa") version "2.2.10"
     kotlin("plugin.serialization") version "2.2.0"
+
 }
 
 group = "com.example"
@@ -53,7 +54,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
+    //Flyway data migrations
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-database-postgresql")
 
+    runtimeOnly("org.postgresql:postgresql")
 
     implementation("com.graphql-java:graphql-java-extended-scalars:24.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -69,7 +74,7 @@ dependencies {
     implementation("software.amazon.awssdk:s3:2.25.33")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.postgresql:postgresql")
+
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
