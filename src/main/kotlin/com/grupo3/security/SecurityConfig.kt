@@ -77,6 +77,8 @@ class SecurityConfig(
                         "/api/email/**",
                         "/graphql",
                         "/graphiql",
+                        "/actuator/health/**",
+                        "/actuator/info",
                     ).permitAll()
                     .anyRequest().authenticated()
             }

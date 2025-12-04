@@ -51,6 +51,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
 
 
     implementation("com.graphql-java:graphql-java-extended-scalars:24.0")
