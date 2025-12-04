@@ -9,30 +9,25 @@ import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import org.springframework.validation.annotation.Validated
-import java.util.concurrent.TimeUnit
+import org.slf4j.LoggerFactory
 
 @Controller
 @Validated
-class LocationController(private val locationService: LocationService) {
+class LocationController(private val locationService: LocationService
+    ) {
+    private val logger= LoggerFactory.getLogger(LocationController::class.java)
 
     @QueryMapping
     fun locations(): List<LocationResponseDto> {
-
         return locationService.getAllLocations()
     }
-
-
-
     @MutationMapping
     fun createLocation(@Argument @Valid locationCreateDto: LocationCreateDto): LocationResponseDto {
-
+        logger.info("Creating location: ${locationCreateDto.city}, ${locationCreateDto.country}")
         return locationService.createLocation(locationCreateDto)
     }
-
     @QueryMapping(name = "topLocations")
-    fun topDestinations(): List< LocationResponseDto> {
-
-
+    fun topDestinations(): List<LocationResponseDto> {
         return locationService.getTopLocations()
     }
 

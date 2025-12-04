@@ -1,10 +1,17 @@
 package com.grupo3.exception
 
+import com.grupo3.controller.hotel.LocationController
+import com.grupo3.exception.GraphQLErrorFactory.buildError
+import com.grupo3.exception.GraphQLErrorFactory.buildValidationError
+import com.grupo3.exception.GraphQLErrorFactory.extractViolations
+import com.grupo3.exception.customException.LocationAlreadyExistsException
+import com.grupo3.exception.customException.LocationNotFoundException
 import graphql.GraphQLError
 import graphql.GraphQLException
 import graphql.GraphqlErrorBuilder
 import graphql.schema.DataFetchingEnvironment
 import jakarta.validation.ConstraintViolationException
+import org.slf4j.LoggerFactory
 import org.springframework.graphql.data.method.annotation.GraphQlExceptionHandler
 import org.springframework.graphql.execution.ErrorType
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -15,6 +22,10 @@ import java.util.Date
 @ControllerAdvice
 class GraphQLExceptionHandler {
 
+    private val logger= LoggerFactory.getLogger(LocationController::class.java)
+
+    // ============ VALIDATION EXCEPTIONS ============
+
     @GraphQlExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolation(ex: ConstraintViolationException, env: DataFetchingEnvironment): GraphQLError {
         val violations = ex.constraintViolations.map {
@@ -24,119 +35,83 @@ class GraphQLExceptionHandler {
                 rejectedValue = it.invalidValue?.toString()
             )
         }
-        val error = ErrorDetails(
-            message = "Validation failed",
-            details = "Validation Error",
-            localDateTime = Date(),
-            code = "VALIDATION_FAILED",
-            status = 400,
-            path = env.executionStepInfo.path.toString(),
-            violations = violations
-        )
-        return GraphqlErrorBuilder.newError()
-            .errorType(ErrorType.BAD_REQUEST)
-            .message(error.message)
-            .path(env.executionStepInfo.path)
-            .location(env.field.sourceLocation)
-            .extensions(mapOf(
-                "error" to error
-            ))
-            .build()
+        return buildValidationError(violations, env)
     }
 
     @GraphQlExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, env: DataFetchingEnvironment): GraphQLError {
-        val violations = ex.bindingResult.fieldErrors.map {
-            Violation(
-                field = it.field,
-                message = it.defaultMessage ?: "Invalid value",
-                rejectedValue = it.rejectedValue?.toString()
-            )
-        }
-        val error = ErrorDetails(
-            message = "Validation failed",
-            details = "Validation Error",
-            localDateTime = Date(),
-            code = "VALIDATION_FAILED",
-            status = 400,
-            path = env.executionStepInfo.path.toString(),
-            violations = violations
-        )
-        return GraphqlErrorBuilder.newError()
-            .errorType(ErrorType.BAD_REQUEST)
-            .message(error.message)
-            .path(env.executionStepInfo.path)
-            .location(env.field.sourceLocation)
-            .extensions(mapOf(
-                "error" to error
-            ))
-            .build()
+        val violations = extractViolations(ex.bindingResult)
+        return buildValidationError(violations, env)
     }
 
     @GraphQlExceptionHandler(BindException::class)
     fun handleBindException(ex: BindException, env: DataFetchingEnvironment): GraphQLError {
-        val violations = ex.bindingResult.fieldErrors.map {
-            Violation(
-                field = it.field,
-                message = it.defaultMessage ?: "Invalid value",
-                rejectedValue = it.rejectedValue?.toString()
-            )
-        }
-        val error = ErrorDetails(
-            message = "Validation failed",
-            details = "Validation Error",
-            localDateTime = Date(),
-            code = "VALIDATION_FAILED",
-            status = 400,
-            path = env.executionStepInfo.path.toString(),
-            violations = violations
-        )
-        return GraphqlErrorBuilder.newError()
-            .errorType(ErrorType.BAD_REQUEST)
-            .message(error.message)
-            .path(env.executionStepInfo.path)
-            .location(env.field.sourceLocation)
-            .extensions(mapOf(
-                "error" to error
-            ))
-            .build()
+        val violations = extractViolations(ex.bindingResult)
+        return buildValidationError(violations, env)
     }
+
+    // ============ CUSTOM LOCATION EXCEPTIONS ============
+
+    @GraphQlExceptionHandler(LocationNotFoundException::class)
+    fun handleLocationNotFound(ex: LocationNotFoundException, env: DataFetchingEnvironment): GraphQLError {
+        return buildError(
+            message = ex.message ?: "Location not found",
+            code = "LOCATION_NOT_FOUND",
+            errorType = ErrorType.NOT_FOUND,
+            status = 404,
+            env = env
+        )
+    }
+
+    @GraphQlExceptionHandler(LocationAlreadyExistsException::class)
+    fun handleLocationAlreadyExists(ex: LocationAlreadyExistsException, env: DataFetchingEnvironment): GraphQLError {
+        return buildError(
+            message = ex.message ?: "Location already exists",
+            code = "LOCATION_ALREADY_EXISTS",
+            errorType = ErrorType.BAD_REQUEST,
+            status = 409,
+            env = env
+        )
+    }
+
+    // ============ GENERIC EXCEPTIONS ============
 
     @GraphQlExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgument(ex: IllegalArgumentException, env: DataFetchingEnvironment): GraphQLError {
-        val error = ErrorDetails(
+        return buildError(
             message = ex.message ?: "Invalid request",
-            details = "Invalid Argument",
-            localDateTime = Date(),
             code = "INVALID_ARGUMENT",
+            errorType = ErrorType.BAD_REQUEST,
             status = 400,
-            path = env.executionStepInfo.path.toString()
+            env = env
         )
-        return GraphqlErrorBuilder.newError()
-            .errorType(ErrorType.BAD_REQUEST)
-            .message(error.message)
-            .path(env.executionStepInfo.path)
-            .location(env.field.sourceLocation)
-            .extensions(mapOf("error" to error))
-            .build()
     }
 
     @GraphQlExceptionHandler(GraphQLException::class)
     fun handleGraphQLException(ex: GraphQLException, env: DataFetchingEnvironment): GraphQLError {
-        val error = ErrorDetails(
+        return buildError(
             message = ex.message ?: "Request failed",
-            details = "GraphQL Error",
-            localDateTime = Date(),
             code = "GRAPHQL_ERROR",
+            errorType = ErrorType.BAD_REQUEST,
             status = 400,
-            path = env.executionStepInfo.path.toString()
+            env = env
         )
-        return GraphqlErrorBuilder.newError()
-            .errorType(ErrorType.BAD_REQUEST)
-            .message(error.message)
-            .path(env.executionStepInfo.path)
-            .location(env.field.sourceLocation)
-            .extensions(mapOf("error" to error))
-            .build()
     }
+
+    // Catch-all for unexpected exceptions
+    @GraphQlExceptionHandler(Exception::class)
+    fun handleGenericException(ex: Exception, env: DataFetchingEnvironment): GraphQLError {
+
+        logger.error("Unexpected error", ex)
+
+        return buildError(
+            message = "An unexpected error occurred",
+            code = "INTERNAL_ERROR",
+            errorType = ErrorType.INTERNAL_ERROR,
+            status = 500,
+            env = env
+        )
+    }
+
+
 }

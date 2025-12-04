@@ -1,6 +1,5 @@
-package com.grupo3.controller
+package com.grupo3.controller.email
 
-import com.grupo3.dto.EmailTemplate
 import com.grupo3.service.EmailService
 import com.grupo3.service.UserService
 import org.springframework.http.ResponseEntity
