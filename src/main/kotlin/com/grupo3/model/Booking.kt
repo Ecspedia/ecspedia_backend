@@ -1,7 +1,5 @@
-package com.grupo3.model.booking
+package com.grupo3.model
 
-import com.grupo3.model.User
-import com.grupo3.model.hotel.Hotel
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

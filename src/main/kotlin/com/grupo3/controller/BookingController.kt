@@ -1,6 +1,5 @@
-package com.grupo3.controller.booking
+package com.grupo3.controller
 
-import com.grupo3.dto.booking.BookingMapper
 import com.grupo3.dto.booking.BookingResponseDto
 import com.grupo3.service.booking.BookingService
 import jakarta.validation.constraints.Email

@@ -1,6 +1,6 @@
 package com.grupo3.dto.booking
 
-import com.grupo3.model.booking.BookingStatus
+import com.grupo3.model.BookingStatus
 import java.time.Instant
 
 data class BookingResponseDto(

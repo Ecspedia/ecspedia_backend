@@ -7,8 +7,8 @@ import com.grupo3.dto.hotel.HotelMapper
 import com.grupo3.dto.hotel.HotelPartialResponseDto
 import com.grupo3.dto.hotel.HotelResponseDto
 import com.grupo3.dto.location.LocationMapper
-import com.grupo3.model.hotel.Hotel
-import com.grupo3.repository.hotel.HotelRepository
+import com.grupo3.repository.HotelRepository
+import com.grupo3.service.LocationService
 import com.grupo3.service.hotel.dto.LiteApiSearchResponse
 import com.grupo3.service.hotel.dto.toResponseDto
 import org.springframework.cache.annotation.Cacheable
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class HotelService(
     private val locationService: LocationService,
-    private val hotelClient: HotelClient,
+    private val liteApiClient: LiteApiClient,
     private val hotelRepository: HotelRepository
 ) {
 
@@ -28,7 +28,7 @@ class HotelService(
     fun searchHotelsByLocation(locationQuery: String): List<HotelResponseDto> {
 
         val location = locationService.getLocationByCity(locationQuery)
-        val json = hotelClient.searchHotels(LocationMapper.toEntity(location))
+        val json = liteApiClient.searchHotels(LocationMapper.toEntity(location))
         val response: LiteApiSearchResponse = mapper.readValue(json)
         if (response.data.isEmpty()) {
             return emptyList()
@@ -37,12 +37,14 @@ class HotelService(
     }
 
     fun searchHotelsByNaturalLanguage(naturalLanguage: String): String{
-        val response = hotelClient.searchHotelByNaturalLanguage(naturalLanguage)
+        val response = liteApiClient.searchHotelByNaturalLanguage(naturalLanguage)
         return response
     }
 
+
+
     fun askHotelQuestion(query: String,hotelId: String): String {
-        return hotelClient.askHotelQuestion(query, hotelId  )
+        return liteApiClient.askHotelQuestion(query, hotelId  )
     }
 
     @Transactional

@@ -2,10 +2,13 @@ package com.grupo3.service.chatbox
 
 
 import ai.koog.agents.core.agent.AIAgent
+import ai.koog.agents.core.agent.config.AIAgentConfig
 import ai.koog.agents.core.tools.ToolRegistry
 import ai.koog.prompt.executor.clients.google.GoogleModels
 import ai.koog.prompt.executor.llms.all.simpleGoogleAIExecutor
+import com.grupo3.agent.SimpleHotelGraph
 import com.grupo3.config.GeminiApiConfig
+import com.grupo3.service.hotel.HotelService
 
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
@@ -14,8 +17,32 @@ import org.springframework.stereotype.Service
 @Service
 class GeminiApiService (
     private val geminiApiConfig: GeminiApiConfig,
-    private val toolRegistry: ToolRegistry
+    private val toolRegistry: ToolRegistry,
+    private val hotelService: HotelService
 ){
+
+    fun sendMessageCustomStrategy(message:String): String{
+        println("DEBUG: toolRegistry = $toolRegistry")
+        println("DEBUG: tools available = ${toolRegistry.tools}")
+
+        val agent = AIAgent(
+        promptExecutor = simpleGoogleAIExecutor(geminiApiConfig.key),
+        toolRegistry = toolRegistry,
+        llmModel = GoogleModels.Gemini2_5Flash,
+            strategy= SimpleHotelGraph(hotelService).create()
+    )
+
+
+        val result = runBlocking {
+            println("DEBUG: About to run agent.run() with custom strategy...")
+            agent.run(message)
+        }
+
+        println("DEBUG: Agent result = $result")
+        return result
+
+    }
+
     fun sendMessage(message:String):String {
         println("DEBUG: toolRegistry = $toolRegistry")
         println("DEBUG: tools available = ${toolRegistry.tools}")
@@ -25,14 +52,28 @@ class GeminiApiService (
         val systemPrompt = """
             <system>
                 <role>You are a hotel search assistant</role>
-                <purpose>Help users find and search for hotels</purpose>
+                <purpose>Help users find and search for hotels, and answer questions about specific hotels</purpose>
+
+                <tools>
+                    <tool name="search_hotels">
+                        <description>Use this tool for general hotel searches and queries</description>
+                        <when_to_use>When user is searching for hotels without specifying a particular hotel ID</when_to_use>
+                    </tool>
+                   <tool name="ask_hotel_question">
+                        <description>Use this tool to ask questions about a specific hotel</description>
+                        <when_to_use>When user provides a hotelId and wants to ask questions about that specific hotel</when_to_use>
+                        <required_params>hotelId, searchQuery</required_params>
+                    </tool>
+                </tools>
 
                 <rules>
-                    <rule priority="1">ALWAYS use the GetHotelBySemanticQueryTool for every hotel search query</rule>
-                    <rule priority="2">Never answer hotel questions without using the tool</rule>
-                    <rule priority="3">Pass the user's complete search intent to the tool</rule>
-                    <rule priority="4">Return the tool results directly to the user</rule>
-                    <rule priority="5">If the query is not about hotels, redirect politely</rule>
+                    <rule priority="1">If user message starts with "hotelId:" (e.g., "hotelId:lp19cca ..."), ALWAYS use AskHotelQuestionTool with the extracted hotelId</rule>
+                    <rule priority="2">If user provides a hotelId in the message, ALWAYS use AskHotelQuestionTool</rule>
+                    <rule priority="3">If user is searching for hotels without a hotelId, ALWAYS use GetHotelBySemanticQueryTool</rule>
+                    <rule priority="4">Never answer hotel questions without using the appropriate tool</rule>
+                    <rule priority="5">Pass the user's complete search intent to the tool</rule>
+                    <rule priority="6">Return the tool results directly to the user</rule>
+                    <rule priority="7">If the query is not about hotels, redirect politely</rule>
                 </rules>
 
                 <examples>
@@ -47,6 +88,18 @@ class GeminiApiService (
                     <example>
                         <user_query>Find budget hotels available now</user_query>
                         <action>Use GetHotelBySemanticQueryTool with "budget hotels available now"</action>
+                    </example>
+                    <example>
+                        <user_query>Tell me more about hotel-001</user_query>
+                        <action>Use AskHotelQuestionTool with hotelId="hotel-001" and searchQuery="Tell me more about this hotel"</action>
+                    </example>
+                    <example>
+                        <user_query>What amenities does hotel-005 have?</user_query>
+                        <action>Use AskHotelQuestionTool with hotelId="hotel-005" and searchQuery="What amenities does this hotel have"</action>
+                    </example>
+                    <example>
+                        <user_query>hotelId:lp19cca What amenities does this hotel have?</user_query>
+                        <action>Extract hotelId="lp19cca" from the message, then use AskHotelQuestionTool with hotelId="lp19cca" and searchQuery="What amenities does this hotel have"</action>
                     </example>
                 </examples>
 
@@ -118,6 +171,7 @@ class GeminiApiService (
             systemPrompt = systemPrompt,
             toolRegistry = toolRegistry,
             llmModel = GoogleModels.Gemini2_5Flash
+
         )
 
 

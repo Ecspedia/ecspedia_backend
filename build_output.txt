@@ -1,0 +1,48 @@
+Starting a Gradle Daemon, 1 busy and 5 stopped Daemons could not be reused, use --status for details
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+
+> Task :compileKotlin FAILED
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:67:43 No type arguments expected for fun AIAgentSubgraphBuilderBase<*, *>.nodeLLMRequest(name: String? = ..., allowToolCalls: Boolean = ...): AIAgentNodeDelegate<String, Message.Response>.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:69:13 No parameter with name 'prompt' found.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:97:13 No parameter with name 'processResult' found.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:97:31 Cannot infer type for this parameter. Specify it explicitly.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:98:57 Unresolved reference 'content'.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:99:26 Unresolved reference 'content'.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:104:45 No type arguments expected for fun AIAgentSubgraphBuilderBase<*, *>.nodeLLMRequest(name: String? = ..., allowToolCalls: Boolean = ...): AIAgentNodeDelegate<String, Message.Response>.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:106:13 No parameter with name 'prompt' found.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:126:13 No parameter with name 'processResult' found.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:126:31 Cannot infer type for this parameter. Specify it explicitly.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:127:56 Unresolved reference 'content'.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:128:26 Unresolved reference 'content'.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:166:9 Cannot infer type for this parameter. Specify it explicitly.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:166:14 Argument type mismatch: actual type is 'AIAgentEdgeBuilderIntermediate<HotelMessageData, HotelMessageData, String>', but 'AIAgentEdgeBuilderIntermediate<uninferred IncomingOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred CompatibleOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred OutgoingInput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge)>' was expected.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:169:9 Cannot infer type for this parameter. Specify it explicitly.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:169:14 Argument type mismatch: actual type is 'AIAgentEdgeBuilderIntermediate<HotelMessageData, HotelMessageData, String>', but 'AIAgentEdgeBuilderIntermediate<uninferred IncomingOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred CompatibleOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred OutgoingInput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge)>' was expected.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:172:9 Cannot infer type for this parameter. Specify it explicitly.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:172:14 Argument type mismatch: actual type is 'AIAgentEdgeBuilderIntermediate<Message.Response, Message.Response, String>', but 'AIAgentEdgeBuilderIntermediate<uninferred IncomingOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred CompatibleOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred OutgoingInput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge)>' was expected.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:173:9 Cannot infer type for this parameter. Specify it explicitly.
+e: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/src/main/kotlin/com/grupo3/agent/SimpleHotelStrategy.kt:173:14 Argument type mismatch: actual type is 'AIAgentEdgeBuilderIntermediate<Message.Response, Message.Response, String>', but 'AIAgentEdgeBuilderIntermediate<uninferred IncomingOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred CompatibleOutput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge), uninferred OutgoingInput (of fun <IncomingOutput, OutgoingInput, CompatibleOutput : OutgoingInput> edge)>' was expected.
+
+[Incubating] Problems report is available at: file:///C:/Users/mia/SoftServeProjets/ecspedia_backend/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 8s
+1 actionable task: 1 executed

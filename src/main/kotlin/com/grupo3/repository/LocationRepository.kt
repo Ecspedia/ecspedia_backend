@@ -1,8 +1,7 @@
-package com.grupo3.repository.hotel
+package com.grupo3.repository
 
-import com.grupo3.model.hotel.Location
+import com.grupo3.model.Location
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
 import java.util.Optional
 
 interface LocationRepository : JpaRepository<Location, String> {

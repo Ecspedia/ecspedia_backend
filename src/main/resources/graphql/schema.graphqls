@@ -9,16 +9,16 @@ type Query {
     sendMessage(message:String!):chatResponseDto!
 
     #Hotel Queries
-    hotelsByLocation(location: String!): [Hotel!]!
-    popularHotels: [Hotel!]!
-    hotels: [Hotel!]!
-    hotelById(id: ID!): Hotel
-    hotelsByLocationName(location: String!, checkIn: String!, checkOut: String!, adults: Int!): String!
+    hotelsByLocation(location: String!): [HotelResponseDto!]!
+    popularHotels: [HotelResponseDto!]!
+    hotels: [HotelResponseDto!]!
+    hotelById(id: ID!): HotelResponseDto
+
     hotelExists(id: ID!): Boolean!
 
 
-
-    askHotelQuestion(searchQuery:String!,hotelId:String!):[Hotel!]!
+    semanticSearchHotel(query:String!):String!
+    askHotelQuestion(searchQuery:String!,hotelId:String!):[HotelResponseDto!]!
 
     #Booking Queries
     bookings: [Booking!]!
@@ -27,7 +27,7 @@ type Query {
     #Location Queries
     locations: [Location!]!
     topLocations: [Location!]!
-    locationByCode(code: String!): Location
+
 
 
 
@@ -46,7 +46,7 @@ type Mutation {
     logout: Boolean!
 
     createLocation(locationCreateDto: LocationCreateInput!): Location!
-    createHotel(hotelCreateDto: HotelCreateInput!): Hotel!
+    createHotel(hotelCreateDto: HotelCreateInput!): HotelResponseDto!
     createBooking(
         hotelId: ID!
         userId: ID!
@@ -116,7 +116,7 @@ type chatResponseDto{
 }
 
 
-type Hotel{
+type HotelResponseDto {
     id:ID!
     name:String!
     location:String!

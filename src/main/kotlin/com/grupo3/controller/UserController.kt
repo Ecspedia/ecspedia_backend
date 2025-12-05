@@ -1,4 +1,4 @@
-package com.grupo3.controller.auth
+package com.grupo3.controller
 
 import com.grupo3.dto.auth.AuthRequestDto
 import com.grupo3.dto.auth.AuthResponseDto

@@ -3,10 +3,10 @@ package com.grupo3.service.booking
 import com.grupo3.dto.booking.BookingMapper
 import com.grupo3.dto.booking.BookingResponseDto
 import com.grupo3.model.User
-import com.grupo3.model.booking.Booking
+import com.grupo3.model.Booking
 import com.grupo3.repository.UserRepository
-import com.grupo3.repository.booking.BookingRepository
-import com.grupo3.repository.hotel.HotelRepository
+import com.grupo3.repository.BookingRepository
+import com.grupo3.repository.HotelRepository
 import com.grupo3.service.EmailService
 import com.grupo3.util.BookingEmailUtils
 import com.grupo3.util.DateTimeUtils

@@ -1,4 +1,4 @@
-package com.grupo3.controller.email
+package com.grupo3.controller
 
 import com.grupo3.service.EmailService
 import com.grupo3.service.UserService
