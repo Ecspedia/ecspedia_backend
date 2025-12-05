@@ -1,15 +1,15 @@
-package com.grupo3.controller.hotel
+package com.grupo3.controller
 
 import com.grupo3.dto.location.LocationCreateDto
 import com.grupo3.dto.location.LocationResponseDto
-import com.grupo3.service.hotel.LocationService
+import com.grupo3.service.LocationService
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import org.springframework.validation.annotation.Validated
-import org.slf4j.LoggerFactory
 
 @Controller
 @Validated

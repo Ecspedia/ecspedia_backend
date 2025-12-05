@@ -1,6 +1,6 @@
-package com.grupo3.repository.booking
+package com.grupo3.repository
 
-import com.grupo3.model.booking.Booking
+import com.grupo3.model.Booking
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

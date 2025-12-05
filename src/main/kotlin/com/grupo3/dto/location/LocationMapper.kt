@@ -1,6 +1,6 @@
 package com.grupo3.dto.location
 
-import com.grupo3.model.hotel.Location
+import com.grupo3.model.Location
 
 object LocationMapper {
 

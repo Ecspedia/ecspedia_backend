@@ -1,9 +1,10 @@
 package com.grupo3.exception
 
-import com.grupo3.controller.hotel.LocationController
+import com.grupo3.controller.LocationController
 import com.grupo3.exception.GraphQLErrorFactory.buildError
 import com.grupo3.exception.GraphQLErrorFactory.buildValidationError
 import com.grupo3.exception.GraphQLErrorFactory.extractViolations
+import com.grupo3.exception.customException.HotelApiException
 import com.grupo3.exception.customException.LocationAlreadyExistsException
 import com.grupo3.exception.customException.LocationNotFoundException
 import graphql.GraphQLError
@@ -70,6 +71,17 @@ class GraphQLExceptionHandler {
             code = "LOCATION_ALREADY_EXISTS",
             errorType = ErrorType.BAD_REQUEST,
             status = 409,
+            env = env
+        )
+    }
+
+    @GraphQlExceptionHandler(HotelApiException::class)
+    fun handleHotelApiException(ex: HotelApiException, env: DataFetchingEnvironment): GraphQLError {
+        return buildError(
+            message = ex.message ?: "Hotel service unavailable",
+            code = "HOTEL_API_ERROR",
+            errorType = ErrorType.INTERNAL_ERROR,
+            status = ex.statusCode,
             env = env
         )
     }

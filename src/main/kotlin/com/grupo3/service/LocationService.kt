@@ -1,14 +1,13 @@
-package com.grupo3.service.hotel
+package com.grupo3.service
 
 import com.grupo3.dto.location.LocationCreateDto
 import com.grupo3.dto.location.LocationMapper
 import com.grupo3.dto.location.LocationResponseDto
 import com.grupo3.exception.customException.LocationAlreadyExistsException
 import com.grupo3.exception.customException.LocationNotFoundException
-import com.grupo3.repository.hotel.LocationRepository
+import com.grupo3.repository.LocationRepository
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class LocationService(private val locationRepository: LocationRepository) {

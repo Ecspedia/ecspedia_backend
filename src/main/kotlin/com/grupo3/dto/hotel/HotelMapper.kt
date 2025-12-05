@@ -1,9 +1,8 @@
 package com.grupo3.dto.hotel
 
-import com.grupo3.model.hotel.Hotel
-import com.grupo3.model.hotel.HotelAccessibilityAttributes
+import com.grupo3.model.Hotel
+import com.grupo3.model.HotelAccessibilityAttributes
 import java.util.UUID
-import kotlin.String
 
 object HotelMapper {
 

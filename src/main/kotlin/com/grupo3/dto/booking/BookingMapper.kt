@@ -1,6 +1,6 @@
 package com.grupo3.dto.booking
 
-import com.grupo3.model.booking.Booking
+import com.grupo3.model.Booking
 
 object BookingMapper {
 

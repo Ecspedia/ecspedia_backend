@@ -11,9 +11,9 @@ class ChatService(
 ) {
 
 
-    @Cacheable(value = ["sendMessage"], key = "#message.toLowerCase()")
+//    @Cacheable(value = ["sendMessage"], key = "#message.toLowerCase()")
     fun sendMessageToApi(message: String): ChatResponseDto{
-        val response = geminiApiService.sendMessage(message)
+        val response = geminiApiService.sendMessageCustomStrategy(message)
         val typeOf = ChatResponseType.HOTELS
         return ChatResponseDto(response, typeOf)
     }

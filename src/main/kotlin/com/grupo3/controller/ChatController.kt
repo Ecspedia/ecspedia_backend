@@ -1,4 +1,4 @@
-package com.grupo3.controller.chat
+package com.grupo3.controller
 
 import com.grupo3.dto.chat.ChatResponseDto
 import com.grupo3.service.chatbox.ChatService

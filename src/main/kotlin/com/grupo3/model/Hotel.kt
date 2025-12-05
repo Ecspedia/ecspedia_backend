@@ -1,4 +1,4 @@
-package com.grupo3.model.hotel
+package com.grupo3.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
