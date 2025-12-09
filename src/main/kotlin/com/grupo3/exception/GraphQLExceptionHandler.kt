@@ -4,6 +4,7 @@ import com.grupo3.controller.LocationController
 import com.grupo3.exception.GraphQLErrorFactory.buildError
 import com.grupo3.exception.GraphQLErrorFactory.buildValidationError
 import com.grupo3.exception.GraphQLErrorFactory.extractViolations
+import com.grupo3.exception.customException.BookingIdNotFoundException
 import com.grupo3.exception.customException.HotelApiException
 import com.grupo3.exception.customException.LocationAlreadyExistsException
 import com.grupo3.exception.customException.LocationNotFoundException
@@ -85,6 +86,20 @@ class GraphQLExceptionHandler {
             env = env
         )
     }
+
+    @GraphQlExceptionHandler(BookingIdNotFoundException::class)
+    fun handleBookingNotFoundId(ex: BookingIdNotFoundException, env: DataFetchingEnvironment): GraphQLError {
+        return buildError(
+            message = ex.message ?: "Booking id not found",
+            code = "BOOKING_NOT_FOUND",
+            errorType = ErrorType.BAD_REQUEST,
+            status = 409,
+            env = env
+        )
+    }
+
+
+
 
     // ============ GENERIC EXCEPTIONS ============
 
