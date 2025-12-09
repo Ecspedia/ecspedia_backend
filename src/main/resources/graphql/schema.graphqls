@@ -31,6 +31,8 @@ type Mutation {
     login(authRequest: AuthInput!): AuthResponse!
     forgotPassword(email: String!): PasswordResetResponse!
     resetPassword(email: String!, token: String!, newPassword: String!): PasswordResetResponse!
+    updateUsername(updateUsernameDto: UpdateUsernameInput!): User!
+    updateProfilePhoto(updateProfilePhotoDto: UpdateProfilePhotoInput!): User!
     logout: Boolean!
 
     createLocation(locationCreateDto: LocationCreateInput!): Location!
@@ -55,12 +57,21 @@ type User {
     id: ID!
     username: String!
     email: String!
+    profilePhotoUrl: String
 }
 
 input UserRegistrationInput {
     username: String!
     email: String!
     password: String!
+}
+
+input UpdateUsernameInput {
+    username: String!
+}
+
+input UpdateProfilePhotoInput {
+    imageBase64: String!
 }
 
 input AuthInput {
