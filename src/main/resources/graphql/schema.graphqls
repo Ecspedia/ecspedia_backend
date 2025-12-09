@@ -6,7 +6,7 @@ type Query {
     getAllUsers: [User!]!
     me:User
     #Chat1
-    sendMessage(message:String!):chatResponseDto!
+    sendMessage(message:String!):ChatResponseDto!
 
     #Hotel Queries
     hotelsByLocation(location: String!): [HotelResponseDto!]!
@@ -45,18 +45,9 @@ type Mutation {
 
     createLocation(locationCreateDto: LocationCreateInput!): Location!
     createHotel(hotelCreateDto: HotelCreateInput!): HotelResponseDto!
-    createBooking(
-        hotelId: ID!
-        userId: ID!
-        firstNameGuest: String!
-        lastNameGuest: String!
-        emailGuest: String!
-        phoneNumberGuest: String
-        startTime: String!
-        endTime: String!
-        price: Float
-        currency: String
-    ): Booking!
+    createBooking(bookingCreateDto: BookingCreateInput!): Booking!
+
+    deleteBookingById(bookingId: ID!): String!
 
 }
 
@@ -93,16 +84,25 @@ type PasswordResetResponse {
 }
 
 
-
 enum ChatResponseType {
-    NORMAL
-    HOTELS
+    SEARCH_RESULTS
+    QUESTION_ANSWER
+    BOOKING
+    OTHER
+    ERROR
+}
+type ChatResponseDto {
+    success: Boolean!
+    chatResponseType: ChatResponseType!
+    searchData:[HotelResponseDto!]
+    questionData: String
+    otherData: String
+    bookingData: String
+    errorData:String
 }
 
-type chatResponseDto{
-    response:String!
-    typeOf: ChatResponseType!
-}
+
+
 
 
 type HotelResponseDto {
@@ -201,6 +201,19 @@ input LocationCreateInput {
     state: String
     latitude: Float
     longitude: Float
+}
+
+input BookingCreateInput {
+    hotelId: ID!
+    userId: ID!
+    firstNameGuest: String!
+    lastNameGuest: String!
+    emailGuest: String!
+    phoneNumberGuest: String
+    startTimeIso: String!
+    endTimeIso: String!
+    price: Int
+    currency: String
 }
 
 type ImageUpdateResponse {

@@ -46,6 +46,13 @@ class LiteApiClient(
 
         return executeGet(uri)
     }
+    fun getHotelById(hotelId: String): String {
+        logger.debug("get hotel by id {}", hotelId)
+        val uri = buildUri("/data/hotels"){
+            queryParam("hotelIds", hotelId)
+        }
+        return executeGet(uri)
+    }
 
     // ============ HELPER METHODS ============
 

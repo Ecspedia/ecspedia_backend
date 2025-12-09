@@ -1,13 +1,17 @@
 package com.grupo3.service.booking
 
+import com.grupo3.dto.booking.BookingCreateDto
 import com.grupo3.dto.booking.BookingMapper
 import com.grupo3.dto.booking.BookingResponseDto
+import com.grupo3.exception.customException.BookingIdNotFoundException
 import com.grupo3.model.User
 import com.grupo3.model.Booking
 import com.grupo3.repository.UserRepository
 import com.grupo3.repository.BookingRepository
 import com.grupo3.repository.HotelRepository
 import com.grupo3.service.EmailService
+import com.grupo3.service.UserService
+import com.grupo3.service.hotel.HotelService
 import com.grupo3.util.BookingEmailUtils
 import com.grupo3.util.DateTimeUtils
 import org.slf4j.LoggerFactory
@@ -17,52 +21,30 @@ import java.util.concurrent.CompletableFuture
 
 @Service
 class BookingService(
-    private val hotelRepository: HotelRepository,
-    private val userRepository: UserRepository,
     private val bookingRepository: BookingRepository,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val hotelService: HotelService,
+    private val userService: UserService
 ) {
     private val logger = LoggerFactory.getLogger(BookingService::class.java)
 
     @Transactional
-    fun createBooking(
-        hotelId: String,
-        userId: Long,
-        firstNameGuest: String,
-        lastNameGuest: String,
-        emailGuest: String,
-        phoneNumberGuest: String?,
-        startTimeIso: String,
-        endTimeIso: String,
-        price: Long?,
-        currency: String?
-    ): BookingResponseDto {
-        val startTime = DateTimeUtils.parseIsoInstant(startTimeIso, "startTime")
-        val endTime = DateTimeUtils.parseIsoInstant(endTimeIso, "endTime")
+    fun createBooking(bookingCreateDto: BookingCreateDto): BookingResponseDto {
+        // Ensure hotel exists in DB (fetch from API if needed)
+        hotelService.saveHotelFromApi(bookingCreateDto.hotelId)
+            ?: throw IllegalArgumentException("Hotel ${bookingCreateDto.hotelId} doesn't exist")
 
-        require(endTime.isAfter(startTime)) { "endTime must be after startTime" }
+        // Get the managed Hotel entity from repository
+        val hotel = hotelService.getHotelByIdModel(bookingCreateDto.hotelId)
+            ?: throw IllegalArgumentException("Hotel ${bookingCreateDto.hotelId} doesn't exist")
 
-        val hotel = hotelRepository.findById(hotelId)
-            .orElseThrow { IllegalArgumentException("Hotel not found with id: $hotelId") }
+        val user = userService.findUserById(bookingCreateDto.userId)
+            ?: throw IllegalArgumentException("User ${bookingCreateDto.userId} doesn't exist")
 
-        val user = userRepository.findById(userId)
-            .orElseThrow { IllegalArgumentException("User not found with id: $userId") }
-
-        val booking = Booking(
-            hotel = hotel,
-            user = user,
-            firstNameGuest = firstNameGuest,
-            lastNameGuest = lastNameGuest,
-            emailGuest = emailGuest,
-            phoneNumberGuest = phoneNumberGuest,
-            startTime = startTime,
-            endTime = endTime,
-            price = price,
-            currency = currency
-        )
+        val booking = BookingMapper.toDomain(bookingCreateDto, hotel, user)
 
         val savedBooking = bookingRepository.save(booking)
-        CompletableFuture.runAsync { notifyUserOfBooking(user, savedBooking) }
+//        CompletableFuture.runAsync { notifyUserOfBooking(user, savedBooking) }
         return BookingMapper.toResponseDto(savedBooking)
     }
 
@@ -72,6 +54,16 @@ class BookingService(
     fun getBookingByUserEmail(userEmail: String): List<BookingResponseDto> =
         bookingRepository.findAllByUserEmailOrderByCreatedAtDesc(userEmail)
             .map(BookingMapper::toResponseDto)
+
+    fun removeBookingById(bookingId: String) {
+        return try {
+            bookingRepository.deleteById(bookingId)
+        }catch(ex:IllegalArgumentException){
+            throw BookingIdNotFoundException("Booking not found with id: $bookingId")
+        }
+
+    }
+
 
     private fun notifyUserOfBooking(user: User, booking: Booking) {
         val hotelName = booking.hotel.name ?: "Your hotel"
@@ -94,4 +86,8 @@ class BookingService(
             logger.warn("Failed to send booking confirmation email to ${user.email}", ex)
         }
     }
+
+
+
+
 }
