@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class ChatService(
     private val geminiApiService: GeminiApiService,
 ) {
-    @Cacheable(value = ["sendMessage"], key = "#message.toLowerCase()")
+//    @Cacheable(value = ["sendMessage"], key = "#message.toLowerCase()")
     fun sendMessageToApi(message: String): ChatResponseDto {
         return geminiApiService.sendMessageCustomStrategy(message)
     }
