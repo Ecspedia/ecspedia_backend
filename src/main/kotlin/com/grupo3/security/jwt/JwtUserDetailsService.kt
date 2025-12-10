@@ -26,4 +26,15 @@ class JwtUserDetailsService(
             .roles(ROLE_USER)
             .build()
     }
+
+    fun loadUserById(userId: Long): UserDetails {
+        val user = userRepository.findById(userId)
+            .orElseThrow { UsernameNotFoundException("User not found with id: $userId") }
+
+        return User
+            .withUsername(user.username)
+            .password(user.password)
+            .roles(ROLE_USER)
+            .build()
+    }
 }

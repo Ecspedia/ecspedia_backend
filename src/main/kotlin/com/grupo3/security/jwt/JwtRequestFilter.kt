@@ -46,8 +46,19 @@ class JwtRequestFilter(
         }
 
         val userDetails = try {
-            userDetailsService.loadUserByUsername(jwt.subject)
+            // Extract userId from token subject (which now contains userId as string)
+            val userId = jwt.subject.toLongOrNull()
+                ?: jwt.getClaim("userId")?.asLong()
+                ?: throw UsernameNotFoundException("Invalid token: no userId found")
+            
+            // Cast to JwtUserDetailsService to use loadUserById method
+            (userDetailsService as? com.grupo3.security.jwt.JwtUserDetailsService)
+                ?.loadUserById(userId)
+                ?: throw UsernameNotFoundException("UserDetailsService does not support loading by ID")
         } catch (userNotFoundEx: UsernameNotFoundException) {
+            chain.doFilter(request, response)
+            return
+        } catch (ex: Exception) {
             chain.doFilter(request, response)
             return
         }
