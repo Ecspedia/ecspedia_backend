@@ -21,8 +21,8 @@ type Query {
     askHotelQuestion(searchQuery:String!,hotelId:String!):[HotelResponseDto!]!
 
     #Booking Queries
-    bookings: [Booking!]!
-    bookingsByUserEmail(email: String!): [Booking!]!
+    bookings: [BookingResponseDto!]!
+    bookingsByUserEmail(email: String!): [BookingResponseDto!]!
 
     #Location Queries
     locations: [Location!]!
@@ -47,8 +47,9 @@ type Mutation {
 
     createLocation(locationCreateDto: LocationCreateInput!): Location!
     createHotel(hotelCreateDto: HotelCreateInput!): HotelResponseDto!
-    createBooking(bookingCreateDto: BookingCreateInput!): Booking!
 
+
+    createBooking(bookingCreateDto: BookingCreateInput!): BookingResponseDto!
     deleteBookingById(bookingId: ID!): String!
 
 }
@@ -223,6 +224,7 @@ input BookingCreateInput {
     phoneNumberGuest: String
     startTimeIso: String!
     endTimeIso: String!
+    roomType: RoomType!
     price: Int
     currency: String
 }
@@ -233,10 +235,11 @@ type ImageUpdateResponse {
     message: String!
 }
 
-type Booking {
+type BookingResponseDto {
     id: ID!
     hotelId: ID!
     userId: ID!
+    roomType: RoomType!
     firstNameGuest: String!
     lastNameGuest: String!
     emailGuest: String!
@@ -255,4 +258,10 @@ enum BookingStatus {
     PENDING
     CONFIRMED
     CANCELED
+}
+
+enum RoomType {
+    STANDARD
+    DELUXE
+    SUITE
 }

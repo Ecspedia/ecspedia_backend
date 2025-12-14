@@ -14,6 +14,13 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 
+
+enum class RoomType{
+    STANDARD,
+    DELUXE,
+    SUITE
+}
+
 @Entity
 @Table(
     name = "bookings",
@@ -37,6 +44,10 @@ data class Booking(
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     var user: User,
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    var roomType: RoomType,
 
     @Column(nullable = false, length = 80)
     var firstNameGuest: String,

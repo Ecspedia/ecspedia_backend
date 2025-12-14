@@ -24,7 +24,8 @@ object BookingMapper {
             currency = entity.currency,
             createdAt = entity.createdAt,
             confirmedAt = entity.confirmedAt,
-            canceledAt = entity.canceledAt
+            canceledAt = entity.canceledAt,
+            roomType = entity.roomType
         )
 
     fun toDomain(entity: BookingCreateDto, hotel: Hotel, user: User): Booking =
@@ -38,6 +39,7 @@ object BookingMapper {
             startTime = DateTimeUtils.parseIsoInstant( entity.startTimeIso, "startTime"),
             endTime =  DateTimeUtils.parseIsoInstant( entity.endTimeIso, "endTime"),
             price = entity.price,
-            currency = entity.currency
+            currency = entity.currency,
+            roomType = entity.roomType
         )
 }

@@ -1,6 +1,7 @@
 package com.grupo3.dto.booking
 
 import com.grupo3.model.BookingStatus
+import com.grupo3.model.RoomType
 import java.time.Instant
 
 data class BookingResponseDto(
@@ -11,6 +12,7 @@ data class BookingResponseDto(
     val lastNameGuest: String,
     val emailGuest: String,
     val phoneNumberGuest: String?,
+    val roomType: RoomType,
     val startTime: Instant,
     val endTime: Instant,
     val status: BookingStatus,
