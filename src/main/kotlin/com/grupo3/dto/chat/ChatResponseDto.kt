@@ -1,5 +1,6 @@
 package com.grupo3.dto.chat
 
+import com.grupo3.dto.booking.BookingResponseDto
 import com.grupo3.dto.hotel.HotelResponseDto
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
@@ -12,6 +13,11 @@ enum class ChatResponseType {
     ERROR                // System error
 }
 
+data class BookingData(
+    val message: String,
+    val bookingResponseDto: BookingResponseDto? = null
+)
+
 
 data class ChatResponseDto(
     val success: Boolean = true,
@@ -19,6 +25,6 @@ data class ChatResponseDto(
     val searchData: List<HotelResponseDto>,
     val questionData: String,
     val otherData: String,
-    val bookingData: String,
+    val bookingData: BookingData? = null,
     val errorData: String
 )

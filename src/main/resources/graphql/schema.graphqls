@@ -103,13 +103,18 @@ enum ChatResponseType {
     OTHER
     ERROR
 }
+type BookingData {
+    message: String!
+    bookingResponseDto: BookingResponseDto
+}
+
 type ChatResponseDto {
     success: Boolean!
     chatResponseType: ChatResponseType!
     searchData:[HotelResponseDto!]
     questionData: String
     otherData: String
-    bookingData: String
+    bookingData: BookingData
     errorData:String
 }
 

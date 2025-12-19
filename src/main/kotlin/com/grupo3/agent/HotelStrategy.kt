@@ -6,6 +6,7 @@ import com.grupo3.agent.dto.ClassifiedMessage
 import com.grupo3.agent.enums.UserIntent
 import com.grupo3.agent.util.MessageParser
 import com.grupo3.dto.booking.BookingCreateDto
+import com.grupo3.dto.chat.BookingData
 import com.grupo3.dto.chat.ChatResponseDto
 import com.grupo3.dto.chat.ChatResponseType
 import com.grupo3.service.booking.BookingService
@@ -60,7 +61,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = hotels,
                     questionData = "",
                     otherData = "",
-                    bookingData = "",
+
                     errorData = ""
                 )
             } catch (e: Exception) {
@@ -71,7 +72,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "",
+
                     errorData = "Search failed: ${e.message}"
                 )
             }
@@ -88,7 +89,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "",
+
                     errorData = "Hotel ID is required for questions about a specific hotel"
 
                 )
@@ -103,7 +104,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = answer,
                     otherData = "",
-                    bookingData = "",
+
                     errorData = ""
                 )
             } catch (e: Exception) {
@@ -114,7 +115,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "",
+
                     errorData = "Failed to answer question: ${e.message}"
                 )
             }
@@ -131,7 +132,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "You need to log in first to make a booking.",
+                    bookingData = BookingData(message = "You need to log in first to make a booking."),
                     errorData = ""
                 )
             }
@@ -143,7 +144,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "You need to select a hotel first before making a booking.",
+                    bookingData = BookingData(message = "You need to select a hotel first before making a booking."),
                     errorData = ""
                 )
             }
@@ -174,7 +175,7 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "To complete your booking, I still need the following information: ${missingFieldsMessage}. Please provide these details.\"",
+                    bookingData = BookingData(message = "To complete your booking, I still need the following information: $missingFieldsMessage. Please provide these details."),
                     errorData = ""
                 )
             }
@@ -203,9 +204,10 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "Your booking has been confirmed! Booking ID: ${bookingResponse.id}. " +
-                            "Check-in: ${bookingDetails.startDate}, Check-out: ${bookingDetails.endDate}. " +
-                            "Guest: ${bookingDetails.firstNameGuest} ${bookingDetails.lastNameGuest}.",
+                    bookingData = BookingData(
+                        message = "Your booking has been created successfully!",
+                        bookingResponseDto = bookingResponse
+                    ),
                     errorData = ""
                 )
             } catch (e: Exception) {
@@ -216,8 +218,8 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                     searchData = emptyList(),
                     questionData = "",
                     otherData = "",
-                    bookingData = "",
-                    errorData = "Failed to create booking: ${e.message}"
+                    bookingData = BookingData(message = "Failed to create booking: ${e.message}"),
+                    errorData = ""
                 )
             }
         }
@@ -232,8 +234,8 @@ class HotelGraph(private val hotelService: HotelService, private val bookingServ
                 chatResponseType = ChatResponseType.OTHER,
                 searchData = emptyList(),
                 questionData = "",
-                otherData = "Sorry, I’m not able to answer that. I’m a hotel assistant. I can search for hotels, answer questions about specific hotels, and help you make bookings. How can I help you?",
-                bookingData = "",
+                otherData = "Sorry, I'm not able to answer that. I'm a hotel assistant. I can search for hotels, answer questions about specific hotels, and help you make bookings. How can I help you?",
+                bookingData = null,
                 errorData = ""
             )
         }
