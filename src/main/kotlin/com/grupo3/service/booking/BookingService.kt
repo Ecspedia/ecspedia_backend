@@ -44,7 +44,7 @@ class BookingService(
         val booking = BookingMapper.toDomain(bookingCreateDto, hotel, user)
 
         val savedBooking = bookingRepository.save(booking)
-//        CompletableFuture.runAsync { notifyUserOfBooking(user, savedBooking) }
+        CompletableFuture.runAsync { notifyUserOfBooking(user, savedBooking) }
         return BookingMapper.toResponseDto(savedBooking)
     }
 
